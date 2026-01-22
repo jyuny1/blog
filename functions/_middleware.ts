@@ -357,73 +357,66 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
 
     try {
-        let translatedDict: Record<string, string> = {};
+        let translations: string[] = [];
+
         if (textsToTranslate.length > 0) {
-            // 準備批次翻譯
-            // 將所有文本打包成一個 JSON 對象： { "0": "text1", "1": "text2" }
-            // 這樣可以強制模型進行 Key-Value 對應翻譯，打破「續寫」的幻覺機制
-            const maxTexts = Math.min(textsToTranslate.length, 50); // 提高批次量，因為 JSON 結構省空間
-            const dictionary: Record<string, string> = {};
+            // v17 策略：使用分隔符 (Delimiter Strategy) + Temperature 0
+            // JSON 模式似乎會導致某些模型過度聯想或輸出 artifact
+            // 我們改用傳統的 "Block Translation"
 
-            for (let i = 0; i < maxTexts; i++) {
-                dictionary[String(i)] = textsToTranslate[i];
-            }
+            const separator = "\n====\n";
+            const combinedText = textsToTranslate.join(separator);
 
-            const inputJson = JSON.stringify(dictionary);
-
-            // 使用 Mistral 7B 進行翻譯 (取代 Qwen/Llama)
-            // Mistral 通常較簡潔，減少廢話
-            const result = await context.env.AI.run("@cf/mistral/mistral-7b-instruct-v0.1", {
+            // 使用 Llama 3 (非 3.1) 或者是較穩定的模型，並強制 temperature: 0
+            const result = await context.env.AI.run("@cf/meta/llama-3-8b-instruct", {
                 messages: [
                     {
                         role: "system",
-                        content: `You are a strict translator.
-Task: Translate Chinese values in JSON to English.
+                        content: `You are a literal translator. 
+Task: Translate the text blocks.
 Rules:
-1. Translate to concise English.
-2. NO extra comments, NO hallucinations (e.g. 'exclusive event').
-3. NO '<' or '>' characters.
-4. Output valid JSON.`
+1. Translate Chinese to English.
+2. Maintain the separator "====" exactly.
+3. Do not add intro/outro.
+4. Do not hallucinate.`
                     },
                     {
                         role: "user",
-                        content: inputJson
+                        content: combinedText
                     }
                 ],
-                max_tokens: 2000 // Mistral doesn't support response_format: json natively in all versions, but we prompt it.
+                // CRITICAL: Temperature 0 prevents creativity/hallucinations
+                temperature: 0,
+                max_tokens: 2000
             });
 
-            try {
-                // Qwen 的輸出有時比較乾淨，直接嘗試解析
-                const rawResponse = result.response?.trim();
-                // 移除可能的 markdown code block 標記
-                const jsonStr = rawResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-                translatedDict = JSON.parse(jsonStr);
-            } catch (e) {
-                console.error("JSON Parse Error (Qwen):", e, result.response);
-                // Fallback: If parsing fails, we can't use this translation.
-                // The replacement logic below will handle missing translatedText.
-            }
+            const rawResponse = result.response?.trim() || "";
+            translations = rawResponse.split("====").map(t => t.trim());
         }
 
-        // 必須從後往前替換，以避免索引錯亂
+        // 必須從後往前替換
         for (let i = replacementQueue.length - 1; i >= 0; i--) {
             const rep = replacementQueue[i];
             let finalTranslatedText: string | null = null;
 
             if (rep.isAI && rep.aiIndex !== undefined) {
-                finalTranslatedText = translatedDict[String(rep.aiIndex)];
+                // 安全檢查：確保翻譯陣列長度對應
+                if (rep.aiIndex < translations.length) {
+                    finalTranslatedText = translations[rep.aiIndex];
+                } else {
+                    // Fallback to original if lost in translation
+                    finalTranslatedText = textsToTranslate[rep.aiIndex];
+                }
             } else if (!rep.isAI) {
                 finalTranslatedText = rep.translatedInnerContent;
             }
 
-            // Only replace if we have a valid translation and it's different from original (optional check)
-            if (finalTranslatedText && finalTranslatedText !== textsToTranslate[rep.aiIndex!]) { // Compare with original plain text for AI
+            if (finalTranslatedText) {
                 const before = translatedHtml.substring(0, rep.start);
                 const after = translatedHtml.substring(rep.end);
                 const tagMatch = rep.originalFullMatch.match(/^<([^>]+)>([\s\S]*)<\/([^>]+)>$/);
                 if (tagMatch) {
-                    // 使用翻譯後的純文字替換 innerContent
+                    // Cleaner replacement
                     translatedHtml = before + `<${tagMatch[1]}>${finalTranslatedText}</${tagMatch[3]}>` + after;
                 }
             }
@@ -442,8 +435,8 @@ Rules:
         return new Response(htmlWithButton, {
             headers: {
                 "Content-Type": "text/html;charset=UTF-8",
-                "X-AI-Translated": "fresh",
-                "X-Translated-Segments": String(Object.keys(translatedDict).length),
+                "X-AI-Translated": "fresh-v17",
+                "X-Translated-Segments": String(translations.length),
                 "Cache-Control": "public, max-age=3600"
             },
         });
@@ -452,15 +445,11 @@ Rules:
         console.error("Translation error:", error);
         const htmlWithButton = ensureLangToggleButton(translatedHtml);
         return new Response(htmlWithButton, {
-            headers: {
-                "Content-Type": "text/html;charset=UTF-8",
-                "X-AI-Translated": "ui-only-fallback"
-            }
+            headers: { "Content-Type": "text/html;charset=UTF-8", "X-AI-Translated": "error" }
         });
     }
 };
 
 function escapeRegex(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-```
+    ```
