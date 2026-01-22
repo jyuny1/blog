@@ -106,7 +106,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     // 目標語言：英文
     const targetLang = "en";
-    const cacheKey = `v2:${url.pathname}:${targetLang}`;
+    const cacheKey = `v3:${url.pathname}:${targetLang}`;
 
     // 3. 檢查 KV 快取
     if (context.env.TRANSLATION_CACHE) {
