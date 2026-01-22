@@ -262,17 +262,12 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
         // 只處理包含中文字元的內容
         if (/[\u4e00-\u9fff]/.test(innerContent)) {
-            // v12 策略：純文字翻譯 (Plain Text)
-            // 放棄保留行內 HTML (如粗體、連結)，以換取穩定且無幻覺的翻譯結果
-
-            // 剝離所有 HTML 標籤
+            // v13 策略：純文字 + JSON Dictionary
+            // 1. 剝離標籤取得純文字
             const plainText = innerContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
-            // 只有當純文字長度足夠，且不是純標點符號時才翻譯
+            // 2. 只有當純文字有意義時才加入
             if (plainText.length > 1 && innerContent.length < 1500) {
-
-                // 儲存原始 innerContent 以便替換（注意：替換後會失去原有格式）
-                // 為了保留父標籤（如 <p>），我們只替換 innerContent
                 textsToTranslate.push(plainText);
                 textPositions.push({
                     start: match.index,
@@ -291,7 +286,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
                 await context.env.TRANSLATION_CACHE.put(cacheKey, htmlWithButton, {
                     expirationTtl: 60 * 60 * 24 * 7
                 });
-            } catch (e) { console.error("KV error:", e); }
+            } catch (e) { console.error("KV write error:", e); }
         }
         return new Response(htmlWithButton, {
             headers: {
@@ -303,50 +298,66 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
 
     try {
-        // 限制翻譯數量以節省資源 (測試階段)
-        const maxTexts = Math.min(textsToTranslate.length, 30);
-        const translations: string[] = [];
+        // 準備批次翻譯
+        // 將所有文本打包成一個 JSON 對象： { "0": "text1", "1": "text2" }
+        // 這樣可以強制模型進行 Key-Value 對應翻譯，打破「續寫」的幻覺機制
+        const maxTexts = Math.min(textsToTranslate.length, 50); // 提高批次量，因為 JSON 結構省空間
+        const dictionary: Record<string, string> = {};
 
         for (let i = 0; i < maxTexts; i++) {
-            const originalText = textsToTranslate[i];
-
-            // 使用 Llama 3.1 進行高品質翻譯 - Plain Text Strategy
-            const result = await context.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
-                messages: [
-                    {
-                        role: "system",
-                        content: `You are a professional translator for a personal technical blog. 
-Target Language: English.
-Rules:
-1. Translate the Chinese text to natural, concise English.
-2. Do NOT add any intro, outro, or explanations.
-3. Do NOT add any "exclusive event" or marketing fluff.
-4. Output ONLY the translation.`
-                    },
-                    {
-                        role: "user",
-                        content: originalText
-                    }
-                ],
-                max_tokens: 500
-            });
-
-            translations.push(result.response?.trim() || originalText);
+            dictionary[String(i)] = textsToTranslate[i];
         }
 
-        // 必須從後往前替換，以免影響索引
+        const inputJson = JSON.stringify(dictionary);
+
+        // 使用 Llama 3.1 進行翻譯
+        const result = await context.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+            messages: [
+                {
+                    role: "system",
+                    content: `You are a Translation API.
+Task: Translate the Chinese values in the provided JSON object to English.
+Output: A JSON object with the exact same keys, but with values translated to English.
+Rules:
+1. Translate values to natural, concise English.
+2. Keep the JSON structure strictly valid.
+3. Do NOT add new keys, comments, or explanations.
+4. Do NOT hallucinate content (e.g. no "exclusive events").`
+                },
+                {
+                    role: "user",
+                    content: inputJson
+                }
+            ],
+            max_tokens: 2000, // 增加 token 限制以容納整個字典
+            response_format: { type: "json_object" }
+        });
+
+        let translatedDict: Record<string, string> = {};
+        try {
+            const rawResponse = result.response?.trim();
+            const jsonStr = rawResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+            translatedDict = JSON.parse(jsonStr);
+        } catch (e) {
+            console.error("JSON Parse Error:", e);
+            // Fallback: 如果解析失敗，我們就無法使用這次的翻譯
+            // 可以選擇回退到原文，或者嘗試部分修復。這裡選擇保持原文（因為 textPositions 邏輯依賴索引）
+        }
+
+        // 必須從後往前替換
         for (let i = Math.min(maxTexts - 1, textPositions.length - 1); i >= 0; i--) {
             const pos = textPositions[i];
-            const translation = translations[i];
+            const originalText = textsToTranslate[i];
+            const translatedText = translatedDict[String(i)]; // 從字典中查找
 
-            // 這裡我們直接用翻譯後的純文字替換原本的 "innerContent" (包含 HTML)
-            // 這樣會移除原本的行內樣式，但這是為了修復格式崩壞而做的取捨
-            if (translation) {
+            // 只有當成功翻譯且內容不同時才替換
+            if (translatedText && translatedText !== originalText) {
                 const before = translatedHtml.substring(0, pos.start);
                 const after = translatedHtml.substring(pos.end);
                 const tagMatch = pos.fullMatch.match(/^<([^>]+)>([\s\S]*)<\/([^>]+)>$/);
                 if (tagMatch) {
-                    translatedHtml = before + `<${tagMatch[1]}>${translation}</${tagMatch[3]}>` + after;
+                    // 使用翻譯後的純文字替換 innerContent
+                    translatedHtml = before + `<${tagMatch[1]}>${translatedText}</${tagMatch[3]}>` + after;
                 }
             }
         }
