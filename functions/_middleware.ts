@@ -257,7 +257,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         "支援 Obsidian 雙向連結語法": "Support Obsidian Bi-directional Link Syntax",
         "圖片託管於 Cloudflare R2": "Images hosted on Cloudflare R2",
         "支援 AI 翻譯 (針對非中文創作者)": "Support AI translation (for non-Chinese creators)",
-        "使用 Markdown 撰寫文章": "Created with Markdown writing articles"
+        "使用 Markdown 撰寫文章": "Created with Markdown writing articles",
+        "搜尋": "Search",
+        "閱讀時間約": "Read time",
+        "分鐘": "min"
     };
 
     const textsToTranslate: string[] = [];
@@ -280,34 +283,29 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         const fullMatch = match[0];
         const innerContent = match[2];
 
-        // 只處理包含中文字元的內容
-        if (/[\u4e00-\u9fff]/.test(innerContent)) {
-            // v14 策略：優先查表 (Hardcoded Dictionary) -> 其次純文字翻譯
+        // 1. 剝離標籤取得純文字
+        const plainText = innerContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
-            // 1. 剝離標籤取得純文字
-            const plainText = innerContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); // Normalize spaces
+        // 2. 嚴格過濾：確認純文字中確實包含中文 (避免翻譯純符號或數字導致幻覺)
+        if (/[\u4e00-\u9fff]/.test(plainText) && plainText.length > 1 && innerContent.length < 1500) {
 
-            // 2. 查表 (模糊匹配或精確匹配)
-            // 嘗試移除標點符號後匹配
-            const cleanKey = plainText.replace(/[。，！!？?]/g, '').trim();
+            // 3. 查表 (正規化匹配)
+            // 移除所有標點和空白進行比對
+            const normalizedKey = plainText.replace(/[^\u4e00-\u9fff]/g, '');
 
             let staticTranslatedText: string | undefined;
 
-            // Try exact match first
-            staticTranslatedText = STATIC_CONTENT_MAP[cleanKey] || STATIC_CONTENT_MAP[plainText];
-
-            // If not found, try partial match (less precise, but can catch variations)
-            if (!staticTranslatedText) {
-                for (const [key, value] of Object.entries(STATIC_CONTENT_MAP)) {
-                    if (plainText.includes(key)) {
-                        staticTranslatedText = value;
-                        break;
-                    }
+            // 嘗試從 Map 找 (Normal Loop)
+            for (const [key, value] of Object.entries(STATIC_CONTENT_MAP)) {
+                // 移除 map key 的標點和空白
+                const normalizedMapKey = key.replace(/[^\u4e00-\u9fff]/g, '');
+                if (normalizedKey === normalizedMapKey || plainText.includes(key)) {
+                    staticTranslatedText = value;
+                    break;
                 }
             }
 
             if (staticTranslatedText) {
-                // 如果在庫裡找到，加入替換隊列 (不走 AI)
                 replacementQueue.push({
                     start: match.index,
                     end: match.index + fullMatch.length,
@@ -315,14 +313,14 @@ export const onRequest: PagesFunction<Env> = async (context) => {
                     translatedInnerContent: staticTranslatedText,
                     isAI: false
                 });
-            } else if (plainText.length > 1 && innerContent.length < 1500) {
-                // 如果字典裡沒有，才放入 AI 翻譯隊列
+            } else {
+                // 字典沒找到，放入 AI 翻譯隊列
                 textsToTranslate.push(plainText);
                 replacementQueue.push({
                     start: match.index,
                     end: match.index + fullMatch.length,
                     originalFullMatch: fullMatch,
-                    translatedInnerContent: null, // Will be filled by AI
+                    translatedInnerContent: null,
                     isAI: true,
                     aiIndex: textsToTranslate.length - 1
                 });
@@ -347,16 +345,12 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
         const htmlWithButton = ensureLangToggleButton(translatedHtml);
         if (context.env.TRANSLATION_CACHE) {
-            try {
-                await context.env.TRANSLATION_CACHE.put(cacheKey, htmlWithButton, {
-                    expirationTtl: 60 * 60 * 24 * 7
-                });
-            } catch (e) { console.error("KV write error:", e); }
+            context.env.TRANSLATION_CACHE.put(cacheKey, htmlWithButton, { expirationTtl: 60 * 60 * 24 * 7 }).catch(console.error);
         }
         return new Response(htmlWithButton, {
             headers: {
                 "Content-Type": "text/html;charset=UTF-8",
-                "X-AI-Translated": "ui-only",
+                "X-AI-Translated": "static-only",
                 "Cache-Control": "public, max-age=3600"
             }
         });
@@ -377,28 +371,26 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
             const inputJson = JSON.stringify(dictionary);
 
-            // 使用 Qwen 1.5 14B 進行翻譯 (取代 Llama 3.1)
-            // Qwen 在中英互譯表現通常優於 Llama，且較少出現過度聯想("exclusive event")
-            const result = await context.env.AI.run("@cf/qwen/qwen1.5-14b-chat-awq", {
+            // 使用 Mistral 7B 進行翻譯 (取代 Qwen/Llama)
+            // Mistral 通常較簡潔，減少廢話
+            const result = await context.env.AI.run("@cf/mistral/mistral-7b-instruct-v0.1", {
                 messages: [
                     {
                         role: "system",
-                        content: `You are a professional translator.
-Task: Translate the Chinese values in the provided JSON object to English.
-Output: JSON object with translated values.
+                        content: `You are a strict translator.
+Task: Translate Chinese values in JSON to English.
 Rules:
-1. Translate accurately and concisely.
-2. Do NOT add any marketing fluff (no "exclusive events", no "welcome messages").
-3. Do NOT explain the json.
-4. Output valid JSON only.`
+1. Translate to concise English.
+2. NO extra comments, NO hallucinations (e.g. 'exclusive event').
+3. NO '<' or '>' characters.
+4. Output valid JSON.`
                     },
                     {
                         role: "user",
                         content: inputJson
                     }
                 ],
-                max_tokens: 2000, // 增加 token 限制以容納整個字典
-                response_format: { type: "json_object" }
+                max_tokens: 2000 // Mistral doesn't support response_format: json natively in all versions, but we prompt it.
             });
 
             try {
