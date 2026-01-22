@@ -262,15 +262,18 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
         // 只處理包含中文字元的內容
         if (/[\u4e00-\u9fff]/.test(innerContent)) {
-            // v11 策略：直接使用原始 HTML 片段，不進行代幣化
-            // 利用 JSON 結構來限制 AI 的輸出格式，避免幻覺
+            // v12 策略：純文字翻譯 (Plain Text)
+            // 放棄保留行內 HTML (如粗體、連結)，以換取穩定且無幻覺的翻譯結果
 
-            // 檢查是否有實質內容（忽略只有標籤的情況）
-            const pureText = innerContent.replace(/<[^>]+>/g, '').trim();
+            // 剝離所有 HTML 標籤
+            const plainText = innerContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
 
-            if (pureText.length > 0 && innerContent.length < 1500) {
-                textsToTranslate.push(innerContent);
-                // 不需要 textTagMaps 了，因為我們保留原始 HTML
+            // 只有當純文字長度足夠，且不是純標點符號時才翻譯
+            if (plainText.length > 1 && innerContent.length < 1500) {
+
+                // 儲存原始 innerContent 以便替換（注意：替換後會失去原有格式）
+                // 為了保留父標籤（如 <p>），我們只替換 innerContent
+                textsToTranslate.push(plainText);
                 textPositions.push({
                     start: match.index,
                     end: match.index + fullMatch.length,
@@ -288,7 +291,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
                 await context.env.TRANSLATION_CACHE.put(cacheKey, htmlWithButton, {
                     expirationTtl: 60 * 60 * 24 * 7
                 });
-            } catch (e) { console.error("KV write error:", e); }
+            } catch (e) { console.error("KV error:", e); }
         }
         return new Response(htmlWithButton, {
             headers: {
@@ -307,61 +310,38 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         for (let i = 0; i < maxTexts; i++) {
             const originalText = textsToTranslate[i];
 
-            // 建構 JSON Input
-            const inputJson = JSON.stringify({ text: originalText });
-
-            // 使用 Llama 3.1 進行高品質翻譯 - JSON Strategy
+            // 使用 Llama 3.1 進行高品質翻譯 - Plain Text Strategy
             const result = await context.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
                 messages: [
                     {
                         role: "system",
-                        content: `You are a strict JSON Translation API.
-Input: JSON object with a "text" field containing HTML.
-Output: JSON object with a "translation" field containing the English translation.
-RULES:
-1. Preserve ALL HTML tags (e.g., <a href="...">, <b>) exactly as they appear.
-2. Only translate the human-readable text content inside the tags.
-3. Do not add any new content, explanations, or conversational text.
-4. Output valid JSON only.`
+                        content: `You are a professional translator for a personal technical blog. 
+Target Language: English.
+Rules:
+1. Translate the Chinese text to natural, concise English.
+2. Do NOT add any intro, outro, or explanations.
+3. Do NOT add any "exclusive event" or marketing fluff.
+4. Output ONLY the translation.`
                     },
                     {
                         role: "user",
-                        content: inputJson
+                        content: originalText
                     }
                 ],
-                max_tokens: 1000,
-                response_format: { type: "json_object" } // 強制 JSON 輸出 (如果模型支援)
+                max_tokens: 500
             });
 
-            let translatedText = originalText;
-            try {
-                // 嘗試解析 JSON 輸出
-                // AI 輸出的 response 可能是 string，也可能已經是 object（取決於 response_format 支援度）
-                // 這裡假設是 string 並嘗試 parse
-                const rawResponse = result.response?.trim();
-                // 有時模型會包含Markdown代碼塊，例如 ```json ... ```，需要清理
-                const jsonStr = rawResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-
-                const parsed = JSON.parse(jsonStr);
-                if (parsed && parsed.translation) {
-                    translatedText = parsed.translation;
-                } else {
-                    // Fallback if structure is wrong
-                    console.warn("AI returned invalid JSON structure:", rawResponse);
-                }
-            } catch (e) {
-                console.warn("Failed to parse AI JSON output:", result.response, e);
-                // 如果解析失敗，稍微嘗試清理一下可能的幻覺
-                // 但通常這時保留原文比較安全
-            }
-
-            translations.push(translatedText);
+            translations.push(result.response?.trim() || originalText);
         }
 
+        // 必須從後往前替換，以免影響索引
         for (let i = Math.min(maxTexts - 1, textPositions.length - 1); i >= 0; i--) {
             const pos = textPositions[i];
             const translation = translations[i];
-            if (translation && translation !== pos.original) {
+
+            // 這裡我們直接用翻譯後的純文字替換原本的 "innerContent" (包含 HTML)
+            // 這樣會移除原本的行內樣式，但這是為了修復格式崩壞而做的取捨
+            if (translation) {
                 const before = translatedHtml.substring(0, pos.start);
                 const after = translatedHtml.substring(pos.end);
                 const tagMatch = pos.fullMatch.match(/^<([^>]+)>([\s\S]*)<\/([^>]+)>$/);
