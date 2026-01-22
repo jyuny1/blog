@@ -376,7 +376,7 @@ Rules:
             headers: {
                 "Content-Type": "text/html;charset=UTF-8",
                 "X-AI-Translated": "fresh",
-                "X-Translated-Segments": String(translations.length),
+                "X-Translated-Segments": String(Object.keys(translatedDict).length),
                 "Cache-Control": "public, max-age=3600"
             },
         });
