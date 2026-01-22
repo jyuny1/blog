@@ -78,14 +78,30 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
 
     // 2. 語言偵測
-    const acceptLanguage = request.headers.get("Accept-Language") || "";
+    // 優先檢查 Cookie 設定（使用者手動選擇）
+    const cookies = request.headers.get("Cookie") || "";
+    const langCookieMatch = cookies.match(/preferred-lang=(auto|zh|en)/);
+    const preferredLang = langCookieMatch ? langCookieMatch[1] : "auto";
 
-    // 如果使用者偏好中文，直接返回原始內容
-    if (acceptLanguage.toLowerCase().startsWith("zh") ||
-        acceptLanguage.toLowerCase().includes("zh-tw") ||
-        acceptLanguage.toLowerCase().includes("zh-cn") ||
-        acceptLanguage.toLowerCase().includes("zh-hk")) {
+    // 如果使用者選擇中文，直接返回原始內容
+    if (preferredLang === "zh") {
         return context.next();
+    }
+
+    // 如果使用者選擇英文，強制翻譯
+    const forceTranslate = preferredLang === "en";
+
+    // 如果是自動模式，檢查 Accept-Language
+    if (!forceTranslate) {
+        const acceptLanguage = request.headers.get("Accept-Language") || "";
+
+        // 如果使用者偏好中文，直接返回原始內容
+        if (acceptLanguage.toLowerCase().startsWith("zh") ||
+            acceptLanguage.toLowerCase().includes("zh-tw") ||
+            acceptLanguage.toLowerCase().includes("zh-cn") ||
+            acceptLanguage.toLowerCase().includes("zh-hk")) {
+            return context.next();
+        }
     }
 
     // 目標語言：英文

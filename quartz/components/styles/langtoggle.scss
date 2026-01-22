@@ -1,0 +1,47 @@
+.lang-toggle {
+  cursor: pointer;
+  padding: 0;
+  position: relative;
+  background: none;
+  border: none;
+  width: 24px;
+  height: 32px;
+  margin: 0;
+  text-align: inherit;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--darkgray);
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--secondary);
+  }
+
+  .lang-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-transform: uppercase;
+    font-family: var(--bodyFont);
+  }
+}
+
+// Show different labels based on saved language
+:root[saved-lang="auto"] .lang-toggle .lang-label::after {
+  content: "自動";
+}
+
+:root[saved-lang="zh"] .lang-toggle .lang-label::after {
+  content: "中";
+}
+
+:root[saved-lang="en"] .lang-toggle .lang-label::after {
+  content: "EN";
+}
+
+// Default (when no attribute set)
+:root:not([saved-lang]) .lang-toggle .lang-label::after {
+  content: "自動";
+}
