@@ -262,17 +262,17 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
         // 只處理包含中文字元的內容
         if (/[\u4e00-\u9fff]/.test(innerContent)) {
-            // 代幣化策略：將 HTML 標籤替換為代幣，避免 AI 破壞結構
+            // 代幣化策略 v9：使用 __TAG_n__ 格式，這對 LLM 來說更像變數，不易混淆
             const placeholders: Map<string, string> = new Map();
             let tagCounter = 0;
             const maskedContent = innerContent.replace(/<[^>]+>/g, (tagMatch) => {
-                const placeholder = `<<<TAG_${tagCounter++}>>>`;
+                const placeholder = `__TAG_${tagCounter++}__`;
                 placeholders.set(placeholder, tagMatch);
                 return placeholder;
             });
 
             // 檢查是否有實質內容（移除代幣後）
-            const pureText = maskedContent.replace(/<<<TAG_\d+>>>/g, '').trim();
+            const pureText = maskedContent.replace(/__TAG_\d+__/g, '').trim();
 
             if (pureText.length > 0 && maskedContent.length < 1500) {
                 textsToTranslate.push(maskedContent);
@@ -317,13 +317,13 @@ export const onRequest: PagesFunction<Env> = async (context) => {
                 messages: [
                     {
                         role: "system",
-                        content: "You are a professional translator. Translate the following Chinese text to natural, fluent English. \n" +
-                            "IMPORTANT: The text contains HTML tag placeholders like '<<<TAG_0>>>'. \n" +
-                            "CRITICAL RULES:\n" +
-                            "1. You MUST preserve all '<<<TAG_n>>>' placeholders exactly as they are in the correct position relative to the text.\n" +
-                            "2. Do NOT translate or modify the placeholders.\n" +
-                            "3. Only translate the Chinese text between the placeholders.\n" +
-                            "4. Do NOT add any explanations or notes."
+                        content: "You are a specialized Translation Engine. Your ONLY purpose is to translate Chinese text to English.\n" +
+                            "INPUT FORMAT: Text containing HTML placeholders like '__TAG_0__', '__TAG_1__'.\n" +
+                            "STRICT RULES:\n" +
+                            "1. PRESERVE TAGS: You MUST keep all '__TAG_n__' placeholders EXACTLY as they are. Do not move, translate, or delete them.\n" +
+                            "2. TRANSLATE TEXT: Only translate the Chinese characters between the tags into natural, fluent English.\n" +
+                            "3. NO HALLUCINATION: Do NOT add any formatted headers, 'Welcome' messages, list of languages, or intro/outro text. ONLY output the translation of the input.\n" +
+                            "4. NO EXPLANATIONS: Output ONLY the final translated string."
                     },
                     {
                         role: "user",
@@ -338,7 +338,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
             // 還原 HTML 標籤
             const tagMap = textTagMaps[i];
             tagMap.forEach((originalTag, placeholder) => {
-                // 使用 split/join 替換所有出現的代幣 (雖然通常只有一個)
+                // 使用 global replace 確保所有出現的代幣都被還原
                 translatedText = translatedText.split(placeholder).join(originalTag);
             });
 
