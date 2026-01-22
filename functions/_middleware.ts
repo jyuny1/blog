@@ -247,9 +247,29 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     // ==========================================
     // 步驟 B：內容 AI 翻譯
     // ==========================================
+
+    // 定義已知的靜態內容翻譯字典 (Hardcoded)
+    const STATIC_CONTENT_MAP: Record<string, string> = {
+        "歡迎來到我的部落格": "Welcome to my blog",
+        "關於這個網站": "About this website",
+        "最新文章": "Latest Articles",
+        "更多內容敬請期待！": "Stay tuned for more content!",
+        "支援 Obsidian 雙向連結語法": "Support Obsidian Bi-directional Link Syntax",
+        "圖片託管於 Cloudflare R2": "Images hosted on Cloudflare R2",
+        "支援 AI 翻譯 (針對非中文創作者)": "Support AI translation (for non-Chinese creators)",
+        "使用 Markdown 撰寫文章": "Created with Markdown writing articles"
+    };
+
     const textsToTranslate: string[] = [];
-    const textPositions: { start: number; end: number; original: string; fullMatch: string }[] = [];
-    // textTagMaps 不再需要，因為我們直接處理 HTML 片段
+    // This will store all replacements, whether from static map or AI
+    const replacementQueue: {
+        start: number;
+        end: number;
+        originalFullMatch: string;
+        translatedInnerContent: string | null; // null if it needs AI translation
+        isAI: boolean;
+        aiIndex?: number; // Index in textsToTranslate if isAI is true
+    }[] = [];
 
     // 提取 HTML 中的中文文字區塊
     // 移除 blockquote 以避免破壞 callout 結構，只提取底層元素
@@ -262,24 +282,69 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
         // 只處理包含中文字元的內容
         if (/[\u4e00-\u9fff]/.test(innerContent)) {
-            // v13 策略：純文字 + JSON Dictionary
-            // 1. 剝離標籤取得純文字
-            const plainText = innerContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+            // v14 策略：優先查表 (Hardcoded Dictionary) -> 其次純文字翻譯
 
-            // 2. 只有當純文字有意義時才加入
-            if (plainText.length > 1 && innerContent.length < 1500) {
-                textsToTranslate.push(plainText);
-                textPositions.push({
+            // 1. 剝離標籤取得純文字
+            const plainText = innerContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim(); // Normalize spaces
+
+            // 2. 查表 (模糊匹配或精確匹配)
+            // 嘗試移除標點符號後匹配
+            const cleanKey = plainText.replace(/[。，！!？?]/g, '').trim();
+
+            let staticTranslatedText: string | undefined;
+
+            // Try exact match first
+            staticTranslatedText = STATIC_CONTENT_MAP[cleanKey] || STATIC_CONTENT_MAP[plainText];
+
+            // If not found, try partial match (less precise, but can catch variations)
+            if (!staticTranslatedText) {
+                for (const [key, value] of Object.entries(STATIC_CONTENT_MAP)) {
+                    if (plainText.includes(key)) {
+                        staticTranslatedText = value;
+                        break;
+                    }
+                }
+            }
+
+            if (staticTranslatedText) {
+                // 如果在庫裡找到，加入替換隊列 (不走 AI)
+                replacementQueue.push({
                     start: match.index,
                     end: match.index + fullMatch.length,
-                    original: innerContent,
-                    fullMatch: fullMatch
+                    originalFullMatch: fullMatch,
+                    translatedInnerContent: staticTranslatedText,
+                    isAI: false
+                });
+            } else if (plainText.length > 1 && innerContent.length < 1500) {
+                // 如果字典裡沒有，才放入 AI 翻譯隊列
+                textsToTranslate.push(plainText);
+                replacementQueue.push({
+                    start: match.index,
+                    end: match.index + fullMatch.length,
+                    originalFullMatch: fullMatch,
+                    translatedInnerContent: null, // Will be filled by AI
+                    isAI: true,
+                    aiIndex: textsToTranslate.length - 1
                 });
             }
         }
     }
 
-    if (textsToTranslate.length === 0) {
+    if (textsToTranslate.length === 0 && replacementQueue.every(r => !r.isAI)) {
+        // If no AI translation is needed and all replacements are static
+        // Apply static replacements
+        for (let i = replacementQueue.length - 1; i >= 0; i--) {
+            const rep = replacementQueue[i];
+            if (!rep.isAI && rep.translatedInnerContent) {
+                const before = translatedHtml.substring(0, rep.start);
+                const after = translatedHtml.substring(rep.end);
+                const tagMatch = rep.originalFullMatch.match(/^<([^>]+)>([\s\S]*)<\/([^>]+)>$/);
+                if (tagMatch) {
+                    translatedHtml = before + `<${tagMatch[1]}>${rep.translatedInnerContent}</${tagMatch[3]}>` + after;
+                }
+            }
+        }
+
         const htmlWithButton = ensureLangToggleButton(translatedHtml);
         if (context.env.TRANSLATION_CACHE) {
             try {
@@ -298,24 +363,26 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     }
 
     try {
-        // 準備批次翻譯
-        // 將所有文本打包成一個 JSON 對象： { "0": "text1", "1": "text2" }
-        // 這樣可以強制模型進行 Key-Value 對應翻譯，打破「續寫」的幻覺機制
-        const maxTexts = Math.min(textsToTranslate.length, 50); // 提高批次量，因為 JSON 結構省空間
-        const dictionary: Record<string, string> = {};
+        let translatedDict: Record<string, string> = {};
+        if (textsToTranslate.length > 0) {
+            // 準備批次翻譯
+            // 將所有文本打包成一個 JSON 對象： { "0": "text1", "1": "text2" }
+            // 這樣可以強制模型進行 Key-Value 對應翻譯，打破「續寫」的幻覺機制
+            const maxTexts = Math.min(textsToTranslate.length, 50); // 提高批次量，因為 JSON 結構省空間
+            const dictionary: Record<string, string> = {};
 
-        for (let i = 0; i < maxTexts; i++) {
-            dictionary[String(i)] = textsToTranslate[i];
-        }
+            for (let i = 0; i < maxTexts; i++) {
+                dictionary[String(i)] = textsToTranslate[i];
+            }
 
-        const inputJson = JSON.stringify(dictionary);
+            const inputJson = JSON.stringify(dictionary);
 
-        // 使用 Llama 3.1 進行翻譯
-        const result = await context.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
-            messages: [
-                {
-                    role: "system",
-                    content: `You are a Translation API.
+            // 使用 Llama 3.1 進行翻譯
+            const result = await context.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+                messages: [
+                    {
+                        role: "system",
+                        content: `You are a Translation API.
 Task: Translate the Chinese values in the provided JSON object to English.
 Output: A JSON object with the exact same keys, but with values translated to English.
 Rules:
@@ -323,41 +390,46 @@ Rules:
 2. Keep the JSON structure strictly valid.
 3. Do NOT add new keys, comments, or explanations.
 4. Do NOT hallucinate content (e.g. no "exclusive events").`
-                },
-                {
-                    role: "user",
-                    content: inputJson
-                }
-            ],
-            max_tokens: 2000, // 增加 token 限制以容納整個字典
-            response_format: { type: "json_object" }
-        });
+                    },
+                    {
+                        role: "user",
+                        content: inputJson
+                    }
+                ],
+                max_tokens: 2000, // 增加 token 限制以容納整個字典
+                response_format: { type: "json_object" }
+            });
 
-        let translatedDict: Record<string, string> = {};
-        try {
-            const rawResponse = result.response?.trim();
-            const jsonStr = rawResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
-            translatedDict = JSON.parse(jsonStr);
-        } catch (e) {
-            console.error("JSON Parse Error:", e);
-            // Fallback: 如果解析失敗，我們就無法使用這次的翻譯
-            // 可以選擇回退到原文，或者嘗試部分修復。這裡選擇保持原文（因為 textPositions 邏輯依賴索引）
+            try {
+                const rawResponse = result.response?.trim();
+                const jsonStr = rawResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+                translatedDict = JSON.parse(jsonStr);
+            } catch (e) {
+                console.error("JSON Parse Error:", e);
+                // Fallback: If parsing fails, we can't use this translation.
+                // The replacement logic below will handle missing translatedText.
+            }
         }
 
-        // 必須從後往前替換
-        for (let i = Math.min(maxTexts - 1, textPositions.length - 1); i >= 0; i--) {
-            const pos = textPositions[i];
-            const originalText = textsToTranslate[i];
-            const translatedText = translatedDict[String(i)]; // 從字典中查找
+        // 必須從後往前替換，以避免索引錯亂
+        for (let i = replacementQueue.length - 1; i >= 0; i--) {
+            const rep = replacementQueue[i];
+            let finalTranslatedText: string | null = null;
 
-            // 只有當成功翻譯且內容不同時才替換
-            if (translatedText && translatedText !== originalText) {
-                const before = translatedHtml.substring(0, pos.start);
-                const after = translatedHtml.substring(pos.end);
-                const tagMatch = pos.fullMatch.match(/^<([^>]+)>([\s\S]*)<\/([^>]+)>$/);
+            if (rep.isAI && rep.aiIndex !== undefined) {
+                finalTranslatedText = translatedDict[String(rep.aiIndex)];
+            } else if (!rep.isAI) {
+                finalTranslatedText = rep.translatedInnerContent;
+            }
+
+            // Only replace if we have a valid translation and it's different from original (optional check)
+            if (finalTranslatedText && finalTranslatedText !== textsToTranslate[rep.aiIndex!]) { // Compare with original plain text for AI
+                const before = translatedHtml.substring(0, rep.start);
+                const after = translatedHtml.substring(rep.end);
+                const tagMatch = rep.originalFullMatch.match(/^<([^>]+)>([\s\S]*)<\/([^>]+)>$/);
                 if (tagMatch) {
                     // 使用翻譯後的純文字替換 innerContent
-                    translatedHtml = before + `<${tagMatch[1]}>${translatedText}</${tagMatch[3]}>` + after;
+                    translatedHtml = before + `<${tagMatch[1]}>${finalTranslatedText}</${tagMatch[3]}>` + after;
                 }
             }
         }
@@ -396,3 +468,4 @@ Rules:
 function escapeRegex(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 }
+```
