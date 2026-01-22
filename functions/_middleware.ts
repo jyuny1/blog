@@ -308,6 +308,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     try {
         // 限制翻譯數量以節省資源 (測試階段)
         const maxTexts = Math.min(textsToTranslate.length, 30);
+        const translations: string[] = [];
 
         for (let i = 0; i < maxTexts; i++) {
             // 使用 Llama 3.1 進行高品質翻譯
