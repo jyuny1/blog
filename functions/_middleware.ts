@@ -260,7 +260,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         "使用 Markdown 撰寫文章": "Created with Markdown writing articles",
         "搜尋": "Search",
         "閱讀時間約": "Read time",
-        "分鐘": "min"
+        "分鐘": "min",
+        "建立於": "Created",
+        "深色模式": "Dark Mode",
+        "淺色模式": "Light Mode"
     };
 
     const textsToTranslate: string[] = [];
@@ -283,8 +286,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         const fullMatch = match[0];
         const innerContent = match[2];
 
-        // 1. 剝離標籤取得純文字
-        const plainText = innerContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        // 1. 清理 HTML 標籤與 Markdown 語法 (初步清理)
+        let plainText = innerContent.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+        // 嘗試移除常見 Markdown 符號 (如 **, ==, [[]])
+        plainText = plainText.replace(/\[\[|\]\]|\*\*|==/g, '');
 
         // 2. 嚴格過濾：確認純文字中確實包含中文 (避免翻譯純符號或數字導致幻覺)
         if (/[\u4e00-\u9fff]/.test(plainText) && plainText.length > 1 && innerContent.length < 1500) {
@@ -299,7 +304,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
             for (const [key, value] of Object.entries(STATIC_CONTENT_MAP)) {
                 // 移除 map key 的標點和空白
                 const normalizedMapKey = key.replace(/[^\u4e00-\u9fff]/g, '');
-                if (normalizedKey === normalizedMapKey || plainText.includes(key)) {
+                if (normalizedKey === normalizedMapKey || plainText === key) {
                     staticTranslatedText = value;
                     break;
                 }
@@ -344,9 +349,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         }
 
         const htmlWithButton = ensureLangToggleButton(translatedHtml);
-        if (context.env.TRANSLATION_CACHE) {
-            context.env.TRANSLATION_CACHE.put(cacheKey, htmlWithButton, { expirationTtl: 60 * 60 * 24 * 7 }).catch(console.error);
-        }
+        if (context.env.TRANSLATION_CACHE) context.env.TRANSLATION_CACHE.put(cacheKey, htmlWithButton, { expirationTtl: 60 * 60 * 24 * 7 }).catch(console.error);
         return new Response(htmlWithButton, {
             headers: {
                 "Content-Type": "text/html;charset=UTF-8",
@@ -360,38 +363,53 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         let translations: string[] = [];
 
         if (textsToTranslate.length > 0) {
-            // v17 策略：使用分隔符 (Delimiter Strategy) + Temperature 0
-            // JSON 模式似乎會導致某些模型過度聯想或輸出 artifact
-            // 我們改用傳統的 "Block Translation"
+            // v18: 使用簡單的 JSON Array IO + 當度檢查 (Length Validation)
+            // 將所有文本放入陣列： ["你好", "世界"]
+            const inputJson = JSON.stringify(textsToTranslate);
 
-            const separator = "\n====\n";
-            const combinedText = textsToTranslate.join(separator);
-
-            // 使用 Llama 3 (非 3.1) 或者是較穩定的模型，並強制 temperature: 0
-            const result = await context.env.AI.run("@cf/meta/llama-3-8b-instruct", {
+            // 使用 Llama 3.1
+            const result = await context.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
                 messages: [
                     {
                         role: "system",
-                        content: `You are a literal translator. 
-Task: Translate the text blocks.
+                        content: `You are a strict text processing tool.
+Task: Translate the JSON string array from Chinese to English.
+Output: A JSON string array containing ONLY the translations.
 Rules:
-1. Translate Chinese to English.
-2. Maintain the separator "====" exactly.
-3. Do not add intro/outro.
-4. Do not hallucinate.`
+1. Output MUST be a valid JSON array of strings.
+2. The length of the output array MUST match the input array.
+3. Translate accurately and concisely.
+4. DO NOT add "exclusive events", "promotions", or extra sentences.
+5. DO NOT output code blocks, just the JSON.`
                     },
                     {
                         role: "user",
-                        content: combinedText
+                        content: inputJson
                     }
                 ],
-                // CRITICAL: Temperature 0 prevents creativity/hallucinations
-                temperature: 0,
-                max_tokens: 2000
+                max_tokens: 2000,
+                response_format: { type: "json_object" } // Try to force JSON
             });
 
-            const rawResponse = result.response?.trim() || "";
-            translations = rawResponse.split("====").map(t => t.trim());
+            try {
+                const rawResponse = result.response?.trim() || "";
+                // 清理可能出現的 markdown code blocks
+                const jsonStr = rawResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
+                const parsed = JSON.parse(jsonStr);
+
+                // 檢查是否為陣列，或是否包含在 key 中 (有些模型會回傳 { "translations": [...] })
+                if (Array.isArray(parsed)) {
+                    translations = parsed;
+                } else if (parsed.translations && Array.isArray(parsed.translations)) {
+                    translations = parsed.translations;
+                } else {
+                    // 嘗試從 Object values 提取 (如果模型回傳了 { "0": "...", "1": "..." })
+                    translations = Object.values(parsed);
+                }
+            } catch (e) {
+                console.error("v18 JSON Parse Error:", e);
+                // Fail safe: empty translations will verify below
+            }
         }
 
         // 必須從後往前替換
@@ -400,11 +418,30 @@ Rules:
             let finalTranslatedText: string | null = null;
 
             if (rep.isAI && rep.aiIndex !== undefined) {
-                // 安全檢查：確保翻譯陣列長度對應
                 if (rep.aiIndex < translations.length) {
-                    finalTranslatedText = translations[rep.aiIndex];
+                    const translation = translations[rep.aiIndex];
+                    const original = textsToTranslate[rep.aiIndex];
+
+                    // ==================================================
+                    // v18 核心：幻覺過濾器 (Hallucination Validator)
+                    // ==================================================
+                    if (translation) {
+                        // 1. 長度暴增檢查：如果翻譯長度超過原文 3 倍 (且原文 > 2 字)，視為幻覺
+                        // 2. 也是檢查 artifacts (包含 << >>)
+                        const lengthRatio = translation.length / (original.length || 1);
+                        const hasArtifacts = translation.includes("<") || translation.includes(">");
+                        const isHallucination = lengthRatio > 4 && original.length > 2;
+
+                        if (!hasArtifacts && !isHallucination) {
+                            finalTranslatedText = translation;
+                        } else {
+                            console.warn(`Filtered hallucination/artifact: "${original}" -> "${translation}"`);
+                            finalTranslatedText = original; // Fallback to original
+                        }
+                    } else {
+                        finalTranslatedText = original;
+                    }
                 } else {
-                    // Fallback to original if lost in translation
                     finalTranslatedText = textsToTranslate[rep.aiIndex];
                 }
             } else if (!rep.isAI) {
@@ -416,26 +453,19 @@ Rules:
                 const after = translatedHtml.substring(rep.end);
                 const tagMatch = rep.originalFullMatch.match(/^<([^>]+)>([\s\S]*)<\/([^>]+)>$/);
                 if (tagMatch) {
-                    // Cleaner replacement
+                    // 使用翻譯後的純文字替換 innerContent
                     translatedHtml = before + `<${tagMatch[1]}>${finalTranslatedText}</${tagMatch[3]}>` + after;
                 }
             }
         }
 
         const htmlWithButton = ensureLangToggleButton(translatedHtml);
-
-        if (context.env.TRANSLATION_CACHE) {
-            try {
-                await context.env.TRANSLATION_CACHE.put(cacheKey, htmlWithButton, {
-                    expirationTtl: 60 * 60 * 24 * 7
-                });
-            } catch (e) { console.error("KV error:", e); }
-        }
+        if (context.env.TRANSLATION_CACHE) context.env.TRANSLATION_CACHE.put(cacheKey, htmlWithButton, { expirationTtl: 60 * 60 * 24 * 7 }).catch(console.error);
 
         return new Response(htmlWithButton, {
             headers: {
                 "Content-Type": "text/html;charset=UTF-8",
-                "X-AI-Translated": "fresh-v17",
+                "X-AI-Translated": "fresh-v18",
                 "X-Translated-Segments": String(translations.length),
                 "Cache-Control": "public, max-age=3600"
             },
@@ -445,11 +475,14 @@ Rules:
         console.error("Translation error:", error);
         const htmlWithButton = ensureLangToggleButton(translatedHtml);
         return new Response(htmlWithButton, {
-            headers: { "Content-Type": "text/html;charset=UTF-8", "X-AI-Translated": "error" }
+            headers: {
+                "Content-Type": "text/html;charset=UTF-8",
+                "X-AI-Translated": "error",
+                "Cache-Control": "public, max-age=3600"
+            }
         });
     }
 };
 
 function escapeRegex(string: string): string {
     return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    ```
