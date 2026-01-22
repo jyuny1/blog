@@ -187,8 +187,8 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     // 目標語言：英文
     const targetLang = "en";
-    // 更新快取版本 v6
-    const cacheKey = `v6:${url.pathname}:${targetLang}`;
+    // 更新快取版本 v7
+    const cacheKey = `v7:${url.pathname}:${targetLang}`;
 
     // 3. 檢查 KV 快取
     if (context.env.TRANSLATION_CACHE) {
@@ -250,17 +250,23 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     const textsToTranslate: string[] = [];
     const textPositions: { start: number; end: number; original: string; fullMatch: string }[] = [];
 
-    const tagPattern = /<(h[1-6]|p|li|figcaption|blockquote)[^>]*>([\s\S]*?)<\/\1>/gi;
+    // 提取 HTML 中的中文文字區塊
+    // 移除 blockquote 以避免破壞 callout 結構，只提取底層元素
+    const tagPattern = /<(h[1-6]|p|li|figcaption)[^>]*>([\s\S]*?)<\/\1>/gi;
     let match;
 
     while ((match = tagPattern.exec(translatedHtml)) !== null) {
         const fullMatch = match[0];
         const innerContent = match[2];
 
+        // 只處理包含中文字元的內容
         if (/[\u4e00-\u9fff]/.test(innerContent)) {
-            const plainText = innerContent.replace(/<[^>]+>/g, ' ').trim();
-            if (plainText.length > 0 && plainText.length < 1000) {
-                textsToTranslate.push(plainText);
+            // 直接使用包含 HTML 的內容，不剝離標籤，讓 AI 理解結構
+            // 但需要過濾掉完全是標籤的情況（例如 <br> 或空標籤）
+            const plainTextCheck = innerContent.replace(/<[^>]+>/g, '').trim();
+
+            if (plainTextCheck.length > 0 && innerContent.length < 1500) {
+                textsToTranslate.push(innerContent);
                 textPositions.push({
                     start: match.index,
                     end: match.index + fullMatch.length,
@@ -295,16 +301,20 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         const translations: string[] = [];
 
         for (let i = 0; i < maxTexts; i++) {
+            // 使用 Llama 3.1 進行高品質翻譯
             const text = textsToTranslate[i];
             const result = await context.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
                 messages: [
                     {
                         role: "system",
-                        content: "You are a professional translator. Translate the following Chinese text to natural, fluent English. Only output the translation, nothing else."
+                        content: "You are a professional translator. Translate the following Chinese HTML content to natural, fluent English. CRITICAL: Preserve all HTML tags, attributes, and structure exactly as they are. Only translate the text content inside the tags. Do not add explanations."
                     },
-                    { role: "user", content: text }
+                    {
+                        role: "user",
+                        content: text
+                    }
                 ],
-                max_tokens: 500
+                max_tokens: 1000
             });
             translations.push(result.response?.trim() || text);
         }
