@@ -207,13 +207,24 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         for (let i = 0; i < maxTexts; i++) {
             const text = textsToTranslate[i];
 
-            const result = await context.env.AI.run("@cf/meta/m2m100-1.2b", {
-                text: text,
-                source_lang: "chinese",
-                target_lang: "english"
+            // 使用 Llama 3.1 進行高品質翻譯
+            const result = await context.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+                messages: [
+                    {
+                        role: "system",
+                        content: "You are a professional translator. Translate the following Chinese text to natural, fluent English. Only output the translation, nothing else. Do not add explanations or notes."
+                    },
+                    {
+                        role: "user",
+                        content: text
+                    }
+                ],
+                max_tokens: 500
             });
 
-            translations.push(result.translated_text || text);
+            // Llama 返回格式為 { response: "translated text" }
+            const translatedText = result.response?.trim() || text;
+            translations.push(translatedText);
         }
 
         // 8. 替換翻譯後的內容（從後往前，避免位置偏移）
