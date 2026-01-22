@@ -262,17 +262,17 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
         // 只處理包含中文字元的內容
         if (/[\u4e00-\u9fff]/.test(innerContent)) {
-            // 代幣化策略 v9：使用 __TAG_n__ 格式，這對 LLM 來說更像變數，不易混淆
+            // 代幣化策略 v10：使用 [#n#] 格式，清晰且節省 token
             const placeholders: Map<string, string> = new Map();
             let tagCounter = 0;
             const maskedContent = innerContent.replace(/<[^>]+>/g, (tagMatch) => {
-                const placeholder = `__TAG_${tagCounter++}__`;
+                const placeholder = `[#${tagCounter++}#]`;
                 placeholders.set(placeholder, tagMatch);
                 return placeholder;
             });
 
             // 檢查是否有實質內容（移除代幣後）
-            const pureText = maskedContent.replace(/__TAG_\d+__/g, '').trim();
+            const pureText = maskedContent.replace(/\[#\d+#\]/g, '').trim();
 
             if (pureText.length > 0 && maskedContent.length < 1500) {
                 textsToTranslate.push(maskedContent);
@@ -311,19 +311,25 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         const translations: string[] = [];
 
         for (let i = 0; i < maxTexts; i++) {
-            // 使用 Llama 3.1 進行高品質翻譯
+            // 使用 Llama 3.1 進行高品質翻譯 - One-Shot Strategy
             const text = textsToTranslate[i];
             const result = await context.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
                 messages: [
                     {
                         role: "system",
-                        content: "You are a specialized Translation Engine. Your ONLY purpose is to translate Chinese text to English.\n" +
-                            "INPUT FORMAT: Text containing HTML placeholders like '__TAG_0__', '__TAG_1__'.\n" +
-                            "STRICT RULES:\n" +
-                            "1. PRESERVE TAGS: You MUST keep all '__TAG_n__' placeholders EXACTLY as they are. Do not move, translate, or delete them.\n" +
-                            "2. TRANSLATE TEXT: Only translate the Chinese characters between the tags into natural, fluent English.\n" +
-                            "3. NO HALLUCINATION: Do NOT add any formatted headers, 'Welcome' messages, list of languages, or intro/outro text. ONLY output the translation of the input.\n" +
-                            "4. NO EXPLANATIONS: Output ONLY the final translated string."
+                        content: "You are a precise Translation Engine. Translate Chinese to English.\n" +
+                            "RULES:\n" +
+                            "1. KEEP tags like '[#0#]' exactly where they are.\n" +
+                            "2. TRANSLATE only the Chinese text.\n" +
+                            "3. NO extra words or content."
+                    },
+                    {
+                        role: "user",
+                        content: "你好[#0#]世界"
+                    },
+                    {
+                        role: "assistant",
+                        content: "Hello[#0#]World"
                     },
                     {
                         role: "user",
