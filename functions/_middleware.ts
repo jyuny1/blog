@@ -1,14 +1,69 @@
 /**
  * Cloudflare Pages Middleware for AI Translation
  * 
- * 功能：偵測訪客瀏覽器語言，若非中文則使用 Workers AI 翻譯頁面內容
- * 使用 KV 快取翻譯結果以節省 AI 額度並加速後續請求
+ * 混合翻譯策略：
+ * 1. UI 元素：使用固定對照表（不消耗 AI 額度）
+ * 2. 內容文字：使用 Workers AI（M2M100）
+ * 3. 快取：翻譯結果存入 KV（7 天）
  */
 
 interface Env {
     AI: any;
     TRANSLATION_CACHE: KVNamespace;
 }
+
+// ==========================================
+// UI 元素翻譯對照表（固定翻譯，不消耗 AI 額度）
+// ==========================================
+const UI_TRANSLATIONS: Record<string, string> = {
+    // 搜尋與導航
+    "搜尋": "Search",
+    "探索": "Explore",
+    "目錄": "Table of Contents",
+    "關係圖譜": "Graph View",
+    "反向連結": "Backlinks",
+    "標籤": "Tags",
+    "資料夾": "Folders",
+
+    // 頁面元素
+    "建立於": "Created",
+    "更新於": "Updated",
+    "閱讀時間約": "Read about",
+    "分鐘": "minute",
+    "分": "min",
+
+    // 互動元素
+    "深色模式": "Dark Mode",
+    "淺色模式": "Light Mode",
+    "複製連結": "Copy Link",
+    "已複製": "Copied",
+    "展開": "Expand",
+    "收合": "Collapse",
+
+    // 頁尾
+    "使用": "Created with",
+    "建置": "Built with",
+
+    // 404 頁面
+    "找不到頁面": "Page Not Found",
+    "私人筆記或筆記不存在": "Private note or note does not exist",
+    "無法找到": "Not Found",
+
+    // 標題與分類
+    "最新文章": "Latest Articles",
+    "所有文章": "All Articles",
+    "相關文章": "Related Articles",
+    "上一篇": "Previous",
+    "下一篇": "Next",
+
+    // Callout 類型
+    "小提示": "Tip",
+    "提示": "Tip",
+    "注意": "Note",
+    "警告": "Warning",
+    "重要": "Important",
+    "資訊": "Info",
+};
 
 // 需要翻譯的 HTML 選擇器
 const TRANSLATABLE_SELECTORS = ['h1', 'h2', 'h3', 'h4', 'p', 'li', 'blockquote', 'figcaption'];
@@ -35,7 +90,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     // 目標語言：英文
     const targetLang = "en";
-    const cacheKey = `v1:${url.pathname}:${targetLang}`;
+    const cacheKey = `v2:${url.pathname}:${targetLang}`;
 
     // 3. 檢查 KV 快取
     if (context.env.TRANSLATION_CACHE) {
@@ -63,28 +118,47 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         return response;
     }
 
-    // 5. 如果沒有 AI binding，直接返回原始內容
-    if (!context.env.AI) {
-        console.log("AI binding not configured");
-        return response;
+    // 5. 獲取 HTML 並開始翻譯
+    let translatedHtml = await response.text();
+
+    // ==========================================
+    // 步驟 A：UI 元素固定翻譯（不消耗 AI）
+    // ==========================================
+    for (const [chinese, english] of Object.entries(UI_TRANSLATIONS)) {
+        // 使用全局替換，但要小心不要替換 HTML 標籤屬性中的內容
+        // 只替換標籤內的文字內容
+        const regex = new RegExp(`(?<=>)([^<]*)(${escapeRegex(chinese)})([^<]*)(?=<)`, 'g');
+        translatedHtml = translatedHtml.replace(regex, `$1${english}$3`);
+
+        // 也替換 placeholder 和 title 屬性
+        translatedHtml = translatedHtml.replace(
+            new RegExp(`(placeholder|title|aria-label)="([^"]*)(${escapeRegex(chinese)})([^"]*)"`, 'g'),
+            `$1="$2${english}$4"`
+        );
     }
 
-    // 6. 提取並翻譯內容
-    const originalHtml = await response.text();
+    // 6. 如果沒有 AI binding，只返回 UI 翻譯後的內容
+    if (!context.env.AI) {
+        console.log("AI binding not configured, returning UI-only translation");
+        return new Response(translatedHtml, {
+            headers: {
+                "Content-Type": "text/html;charset=UTF-8",
+                "X-AI-Translated": "ui-only"
+            }
+        });
+    }
 
-    // 使用簡化的翻譯策略：提取主要文字內容翻譯
-    // 由於 M2M100 只能處理純文字，我們需要智慧地提取和替換
-
-    let translatedHtml = originalHtml;
+    // ==========================================
+    // 步驟 B：內容 AI 翻譯
+    // ==========================================
     const textsToTranslate: string[] = [];
-    const textPositions: { start: number; end: number; original: string }[] = [];
+    const textPositions: { start: number; end: number; original: string; fullMatch: string }[] = [];
 
-    // 提取 HTML 中的中文文字區塊 (簡化版：提取標題和段落)
-    // 使用正則表達式匹配 HTML 標籤內的文字
+    // 提取 HTML 中的中文文字區塊
     const tagPattern = /<(h[1-6]|p|li|figcaption|blockquote)[^>]*>([\s\S]*?)<\/\1>/gi;
     let match;
 
-    while ((match = tagPattern.exec(originalHtml)) !== null) {
+    while ((match = tagPattern.exec(translatedHtml)) !== null) {
         const fullMatch = match[0];
         const innerContent = match[2];
 
@@ -97,27 +171,42 @@ export const onRequest: PagesFunction<Env> = async (context) => {
                 textPositions.push({
                     start: match.index,
                     end: match.index + fullMatch.length,
-                    original: innerContent
+                    original: innerContent,
+                    fullMatch: fullMatch
                 });
             }
         }
     }
 
-    // 如果沒有需要翻譯的內容，直接返回
+    // 如果沒有需要 AI 翻譯的內容，返回 UI 翻譯後的結果
     if (textsToTranslate.length === 0) {
-        return new Response(originalHtml, { headers: response.headers });
+        // 儲存到快取
+        if (context.env.TRANSLATION_CACHE) {
+            try {
+                await context.env.TRANSLATION_CACHE.put(cacheKey, translatedHtml, {
+                    expirationTtl: 60 * 60 * 24 * 7
+                });
+            } catch (e) {
+                console.error("KV write error:", e);
+            }
+        }
+        return new Response(translatedHtml, {
+            headers: {
+                "Content-Type": "text/html;charset=UTF-8",
+                "X-AI-Translated": "ui-only",
+                "Cache-Control": "public, max-age=3600"
+            }
+        });
     }
 
-    // 7. 批次翻譯（為了節省 API 呼叫，將多段文字合併）
+    // 7. 批次翻譯
     try {
-        // 限制翻譯數量以避免超出 token 限制
         const maxTexts = Math.min(textsToTranslate.length, 20);
         const translations: string[] = [];
 
         for (let i = 0; i < maxTexts; i++) {
             const text = textsToTranslate[i];
 
-            // 呼叫 Workers AI 進行翻譯
             const result = await context.env.AI.run("@cf/meta/m2m100-1.2b", {
                 text: text,
                 source_lang: "chinese",
@@ -127,17 +216,15 @@ export const onRequest: PagesFunction<Env> = async (context) => {
             translations.push(result.translated_text || text);
         }
 
-        // 8. 替換翻譯後的內容
-        // 從後往前替換，避免位置偏移
+        // 8. 替換翻譯後的內容（從後往前，避免位置偏移）
         for (let i = Math.min(maxTexts - 1, textPositions.length - 1); i >= 0; i--) {
             const pos = textPositions[i];
             const translation = translations[i];
 
             if (translation && translation !== pos.original) {
-                // 找到原始標籤並替換內容
                 const before = translatedHtml.substring(0, pos.start);
                 const after = translatedHtml.substring(pos.end);
-                const tagMatch = translatedHtml.substring(pos.start, pos.end).match(/^<([^>]+)>([\s\S]*)<\/([^>]+)>$/);
+                const tagMatch = pos.fullMatch.match(/^<([^>]+)>([\s\S]*)<\/([^>]+)>$/);
 
                 if (tagMatch) {
                     translatedHtml = before + `<${tagMatch[1]}>${translation}</${tagMatch[3]}>` + after;
@@ -145,11 +232,11 @@ export const onRequest: PagesFunction<Env> = async (context) => {
             }
         }
 
-        // 9. 儲存到 KV 快取 (保存 7 天)
+        // 9. 儲存到 KV 快取 (7 天)
         if (context.env.TRANSLATION_CACHE) {
             try {
                 await context.env.TRANSLATION_CACHE.put(cacheKey, translatedHtml, {
-                    expirationTtl: 60 * 60 * 24 * 7 // 7 天
+                    expirationTtl: 60 * 60 * 24 * 7
                 });
             } catch (e) {
                 console.error("KV write error:", e);
@@ -161,13 +248,24 @@ export const onRequest: PagesFunction<Env> = async (context) => {
                 "Content-Type": "text/html;charset=UTF-8",
                 "X-AI-Translated": "fresh",
                 "X-Translated-Segments": String(translations.length),
+                "X-UI-Translations": String(Object.keys(UI_TRANSLATIONS).length),
                 "Cache-Control": "public, max-age=3600"
             },
         });
 
     } catch (error) {
         console.error("Translation error:", error);
-        // 翻譯失敗時返回原始內容
-        return new Response(originalHtml, { headers: response.headers });
+        // 翻譯失敗時返回 UI 翻譯後的內容
+        return new Response(translatedHtml, {
+            headers: {
+                "Content-Type": "text/html;charset=UTF-8",
+                "X-AI-Translated": "ui-only-fallback"
+            }
+        });
     }
 };
+
+// 輔助函數：轉義正則表達式特殊字元
+function escapeRegex(string: string): string {
+    return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
