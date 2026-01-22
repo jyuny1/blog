@@ -377,19 +377,20 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
             const inputJson = JSON.stringify(dictionary);
 
-            // 使用 Llama 3.1 進行翻譯
-            const result = await context.env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+            // 使用 Qwen 1.5 14B 進行翻譯 (取代 Llama 3.1)
+            // Qwen 在中英互譯表現通常優於 Llama，且較少出現過度聯想("exclusive event")
+            const result = await context.env.AI.run("@cf/qwen/qwen1.5-14b-chat-awq", {
                 messages: [
                     {
                         role: "system",
-                        content: `You are a Translation API.
+                        content: `You are a professional translator.
 Task: Translate the Chinese values in the provided JSON object to English.
-Output: A JSON object with the exact same keys, but with values translated to English.
+Output: JSON object with translated values.
 Rules:
-1. Translate values to natural, concise English.
-2. Keep the JSON structure strictly valid.
-3. Do NOT add new keys, comments, or explanations.
-4. Do NOT hallucinate content (e.g. no "exclusive events").`
+1. Translate accurately and concisely.
+2. Do NOT add any marketing fluff (no "exclusive events", no "welcome messages").
+3. Do NOT explain the json.
+4. Output valid JSON only.`
                     },
                     {
                         role: "user",
@@ -401,11 +402,13 @@ Rules:
             });
 
             try {
+                // Qwen 的輸出有時比較乾淨，直接嘗試解析
                 const rawResponse = result.response?.trim();
+                // 移除可能的 markdown code block 標記
                 const jsonStr = rawResponse.replace(/^```json\s*/, '').replace(/\s*```$/, '');
                 translatedDict = JSON.parse(jsonStr);
             } catch (e) {
-                console.error("JSON Parse Error:", e);
+                console.error("JSON Parse Error (Qwen):", e, result.response);
                 // Fallback: If parsing fails, we can't use this translation.
                 // The replacement logic below will handle missing translatedText.
             }
