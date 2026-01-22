@@ -3,7 +3,7 @@
  * 
  * 混合翻譯策略：
  * 1. UI 元素：使用固定對照表（不消耗 AI 額度）
- * 2. 內容文字：使用 Workers AI（M2M100）
+ * 2. 內容文字：使用 Workers AI (Llama 3.1)
  * 3. 快取：翻譯結果存入 KV（7 天）
  */
 
@@ -63,10 +63,36 @@ const UI_TRANSLATIONS: Record<string, string> = {
     "警告": "Warning",
     "重要": "Important",
     "資訊": "Info",
+
+    // 語言切換按鈕
+    "切換語言 / Toggle Language": "Switch Language",
 };
 
-// 需要翻譯的 HTML 選擇器
-const TRANSLATABLE_SELECTORS = ['h1', 'h2', 'h3', 'h4', 'p', 'li', 'blockquote', 'figcaption'];
+// 語言切換按鈕 HTML（用於注入）
+const LANG_TOGGLE_BUTTON_HTML = `<div style="flex-grow: 0; flex-shrink: 1; flex-basis: auto; order: 0; align-self: center; justify-self: center;"><button class="lang-toggle" aria-label="Toggle language (Chinese / English)" title="Switch Language"><span class="lang-label"></span></button></div>`;
+
+// 輔助函數：確保 HTML 中包含語言切換按鈕
+function ensureLangToggleButton(html: string): string {
+    // 檢查是否已經有 lang-toggle 按鈕
+    if (html.includes('class="lang-toggle"') || html.includes("class='lang-toggle'")) {
+        return html;
+    }
+
+    // 在 darkmode 按鈕的容器之後注入 lang-toggle 按鈕
+    // 尋找 darkmode 按鈕的外層 div 結束標籤
+    const darkmodePattern = /(<\/button><\/div>)(\s*<div[^>]*style="flex-grow: 0[^"]*"[^>]*>\s*<button class="readermode")/i;
+    if (darkmodePattern.test(html)) {
+        return html.replace(darkmodePattern, `$1${LANG_TOGGLE_BUTTON_HTML}$2`);
+    }
+
+    // 嘗試另一個位置：在 darkmode 按鈕後面
+    const altPattern = /(class="darkmode"[^>]*>[\s\S]*?<\/button><\/div>)/i;
+    if (altPattern.test(html)) {
+        return html.replace(altPattern, `$1${LANG_TOGGLE_BUTTON_HTML}`);
+    }
+
+    return html;
+}
 
 export const onRequest: PagesFunction<Env> = async (context) => {
     const request = context.request;
@@ -106,14 +132,16 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     // 目標語言：英文
     const targetLang = "en";
-    const cacheKey = `v3:${url.pathname}:${targetLang}`;
+    const cacheKey = `v4:${url.pathname}:${targetLang}`;
 
     // 3. 檢查 KV 快取
     if (context.env.TRANSLATION_CACHE) {
         try {
             const cached = await context.env.TRANSLATION_CACHE.get(cacheKey);
             if (cached) {
-                return new Response(cached, {
+                // 確保快取的內容也有語言切換按鈕
+                const htmlWithButton = ensureLangToggleButton(cached);
+                return new Response(htmlWithButton, {
                     headers: {
                         "Content-Type": "text/html;charset=UTF-8",
                         "X-AI-Translated": "cache-hit",
@@ -140,18 +168,8 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     // ==========================================
     // 步驟 A：UI 元素固定翻譯（不消耗 AI）
     // ==========================================
-
-    // 首先，保護 lang-toggle 按鈕，用佔位符替換
-    const langTogglePlaceholder = '<!--LANG_TOGGLE_PLACEHOLDER-->';
-    const langToggleMatch = translatedHtml.match(/<button[^>]*class="[^"]*lang-toggle[^"]*"[^>]*>[\s\S]*?<\/button>/i);
-    const langToggleHtml = langToggleMatch ? langToggleMatch[0] : null;
-    if (langToggleHtml) {
-        translatedHtml = translatedHtml.replace(langToggleHtml, langTogglePlaceholder);
-    }
-
     for (const [chinese, english] of Object.entries(UI_TRANSLATIONS)) {
-        // 使用全局替換，但要小心不要替換 HTML 標籤屬性中的內容
-        // 只替換標籤內的文字內容
+        // 只替換標籤內的文字內容（不包含 HTML 標籤）
         const regex = new RegExp(`(?<=>)([^<]*)(${escapeRegex(chinese)})([^<]*)(?=<)`, 'g');
         translatedHtml = translatedHtml.replace(regex, `$1${english}$3`);
 
@@ -165,11 +183,8 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     // 6. 如果沒有 AI binding，只返回 UI 翻譯後的內容
     if (!context.env.AI) {
         console.log("AI binding not configured, returning UI-only translation");
-        // 還原 lang-toggle 按鈕
-        if (langToggleHtml) {
-            translatedHtml = translatedHtml.replace(langTogglePlaceholder, langToggleHtml);
-        }
-        return new Response(translatedHtml, {
+        const htmlWithButton = ensureLangToggleButton(translatedHtml);
+        return new Response(htmlWithButton, {
             headers: {
                 "Content-Type": "text/html;charset=UTF-8",
                 "X-AI-Translated": "ui-only"
@@ -209,21 +224,18 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     // 如果沒有需要 AI 翻譯的內容，返回 UI 翻譯後的結果
     if (textsToTranslate.length === 0) {
-        // 還原 lang-toggle 按鈕
-        if (langToggleHtml) {
-            translatedHtml = translatedHtml.replace(langTogglePlaceholder, langToggleHtml);
-        }
+        const htmlWithButton = ensureLangToggleButton(translatedHtml);
         // 儲存到快取
         if (context.env.TRANSLATION_CACHE) {
             try {
-                await context.env.TRANSLATION_CACHE.put(cacheKey, translatedHtml, {
+                await context.env.TRANSLATION_CACHE.put(cacheKey, htmlWithButton, {
                     expirationTtl: 60 * 60 * 24 * 7
                 });
             } catch (e) {
                 console.error("KV write error:", e);
             }
         }
-        return new Response(translatedHtml, {
+        return new Response(htmlWithButton, {
             headers: {
                 "Content-Type": "text/html;charset=UTF-8",
                 "X-AI-Translated": "ui-only",
@@ -276,10 +288,13 @@ export const onRequest: PagesFunction<Env> = async (context) => {
             }
         }
 
-        // 9. 儲存到 KV 快取 (7 天)
+        // 9. 確保有語言切換按鈕
+        const htmlWithButton = ensureLangToggleButton(translatedHtml);
+
+        // 10. 儲存到 KV 快取 (7 天)
         if (context.env.TRANSLATION_CACHE) {
             try {
-                await context.env.TRANSLATION_CACHE.put(cacheKey, translatedHtml, {
+                await context.env.TRANSLATION_CACHE.put(cacheKey, htmlWithButton, {
                     expirationTtl: 60 * 60 * 24 * 7
                 });
             } catch (e) {
@@ -287,12 +302,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
             }
         }
 
-        // 還原 lang-toggle 按鈕
-        if (langToggleHtml) {
-            translatedHtml = translatedHtml.replace(langTogglePlaceholder, langToggleHtml);
-        }
-
-        return new Response(translatedHtml, {
+        return new Response(htmlWithButton, {
             headers: {
                 "Content-Type": "text/html;charset=UTF-8",
                 "X-AI-Translated": "fresh",
@@ -304,12 +314,9 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     } catch (error) {
         console.error("Translation error:", error);
-        // 還原 lang-toggle 按鈕
-        if (langToggleHtml) {
-            translatedHtml = translatedHtml.replace(langTogglePlaceholder, langToggleHtml);
-        }
-        // 翻譯失敗時返回 UI 翻譯後的內容
-        return new Response(translatedHtml, {
+        // 翻譯失敗時返回 UI 翻譯後的內容，確保有語言切換按鈕
+        const htmlWithButton = ensureLangToggleButton(translatedHtml);
+        return new Response(htmlWithButton, {
             headers: {
                 "Content-Type": "text/html;charset=UTF-8",
                 "X-AI-Translated": "ui-only-fallback"
