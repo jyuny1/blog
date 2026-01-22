@@ -140,6 +140,15 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     // ==========================================
     // 步驟 A：UI 元素固定翻譯（不消耗 AI）
     // ==========================================
+
+    // 首先，保護 lang-toggle 按鈕，用佔位符替換
+    const langTogglePlaceholder = '<!--LANG_TOGGLE_PLACEHOLDER-->';
+    const langToggleMatch = translatedHtml.match(/<button[^>]*class="[^"]*lang-toggle[^"]*"[^>]*>[\s\S]*?<\/button>/i);
+    const langToggleHtml = langToggleMatch ? langToggleMatch[0] : null;
+    if (langToggleHtml) {
+        translatedHtml = translatedHtml.replace(langToggleHtml, langTogglePlaceholder);
+    }
+
     for (const [chinese, english] of Object.entries(UI_TRANSLATIONS)) {
         // 使用全局替換，但要小心不要替換 HTML 標籤屬性中的內容
         // 只替換標籤內的文字內容
@@ -156,6 +165,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     // 6. 如果沒有 AI binding，只返回 UI 翻譯後的內容
     if (!context.env.AI) {
         console.log("AI binding not configured, returning UI-only translation");
+        // 還原 lang-toggle 按鈕
+        if (langToggleHtml) {
+            translatedHtml = translatedHtml.replace(langTogglePlaceholder, langToggleHtml);
+        }
         return new Response(translatedHtml, {
             headers: {
                 "Content-Type": "text/html;charset=UTF-8",
@@ -196,6 +209,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     // 如果沒有需要 AI 翻譯的內容，返回 UI 翻譯後的結果
     if (textsToTranslate.length === 0) {
+        // 還原 lang-toggle 按鈕
+        if (langToggleHtml) {
+            translatedHtml = translatedHtml.replace(langTogglePlaceholder, langToggleHtml);
+        }
         // 儲存到快取
         if (context.env.TRANSLATION_CACHE) {
             try {
@@ -270,6 +287,11 @@ export const onRequest: PagesFunction<Env> = async (context) => {
             }
         }
 
+        // 還原 lang-toggle 按鈕
+        if (langToggleHtml) {
+            translatedHtml = translatedHtml.replace(langTogglePlaceholder, langToggleHtml);
+        }
+
         return new Response(translatedHtml, {
             headers: {
                 "Content-Type": "text/html;charset=UTF-8",
@@ -282,6 +304,10 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     } catch (error) {
         console.error("Translation error:", error);
+        // 還原 lang-toggle 按鈕
+        if (langToggleHtml) {
+            translatedHtml = translatedHtml.replace(langTogglePlaceholder, langToggleHtml);
+        }
         // 翻譯失敗時返回 UI 翻譯後的內容
         return new Response(translatedHtml, {
             headers: {
