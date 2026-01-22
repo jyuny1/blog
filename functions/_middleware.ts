@@ -187,8 +187,8 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     // 目標語言：英文
     const targetLang = "en";
-    // 更新快取版本 v7
-    const cacheKey = `v7:${url.pathname}:${targetLang}`;
+    // 更新快取版本 v8
+    const cacheKey = `v8:${url.pathname}:${targetLang}`;
 
     // 3. 檢查 KV 快取
     if (context.env.TRANSLATION_CACHE) {
@@ -249,6 +249,7 @@ export const onRequest: PagesFunction<Env> = async (context) => {
     // ==========================================
     const textsToTranslate: string[] = [];
     const textPositions: { start: number; end: number; original: string; fullMatch: string }[] = [];
+    const textTagMaps: Map<string, string>[] = []; // 儲存每個區塊的標籤映射
 
     // 提取 HTML 中的中文文字區塊
     // 移除 blockquote 以避免破壞 callout 結構，只提取底層元素
@@ -261,12 +262,21 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
         // 只處理包含中文字元的內容
         if (/[\u4e00-\u9fff]/.test(innerContent)) {
-            // 直接使用包含 HTML 的內容，不剝離標籤，讓 AI 理解結構
-            // 但需要過濾掉完全是標籤的情況（例如 <br> 或空標籤）
-            const plainTextCheck = innerContent.replace(/<[^>]+>/g, '').trim();
+            // 代幣化策略：將 HTML 標籤替換為代幣，避免 AI 破壞結構
+            const placeholders: Map<string, string> = new Map();
+            let tagCounter = 0;
+            const maskedContent = innerContent.replace(/<[^>]+>/g, (tagMatch) => {
+                const placeholder = `<<<TAG_${tagCounter++}>>>`;
+                placeholders.set(placeholder, tagMatch);
+                return placeholder;
+            });
 
-            if (plainTextCheck.length > 0 && innerContent.length < 1500) {
-                textsToTranslate.push(innerContent);
+            // 檢查是否有實質內容（移除代幣後）
+            const pureText = maskedContent.replace(/<<<TAG_\d+>>>/g, '').trim();
+
+            if (pureText.length > 0 && maskedContent.length < 1500) {
+                textsToTranslate.push(maskedContent);
+                textTagMaps.push(placeholders);
                 textPositions.push({
                     start: match.index,
                     end: match.index + fullMatch.length,
@@ -295,10 +305,9 @@ export const onRequest: PagesFunction<Env> = async (context) => {
         });
     }
 
-    // 7. 批次翻譯
     try {
-        const maxTexts = Math.min(textsToTranslate.length, 20);
-        const translations: string[] = [];
+        // 限制翻譯數量以節省資源 (測試階段)
+        const maxTexts = Math.min(textsToTranslate.length, 30);
 
         for (let i = 0; i < maxTexts; i++) {
             // 使用 Llama 3.1 進行高品質翻譯
@@ -307,7 +316,13 @@ export const onRequest: PagesFunction<Env> = async (context) => {
                 messages: [
                     {
                         role: "system",
-                        content: "You are a professional translator. Translate the following Chinese HTML content to natural, fluent English. CRITICAL: Preserve all HTML tags, attributes, and structure exactly as they are. Only translate the text content inside the tags. Do not add explanations."
+                        content: "You are a professional translator. Translate the following Chinese text to natural, fluent English. \n" +
+                            "IMPORTANT: The text contains HTML tag placeholders like '<<<TAG_0>>>'. \n" +
+                            "CRITICAL RULES:\n" +
+                            "1. You MUST preserve all '<<<TAG_n>>>' placeholders exactly as they are in the correct position relative to the text.\n" +
+                            "2. Do NOT translate or modify the placeholders.\n" +
+                            "3. Only translate the Chinese text between the placeholders.\n" +
+                            "4. Do NOT add any explanations or notes."
                     },
                     {
                         role: "user",
@@ -316,7 +331,17 @@ export const onRequest: PagesFunction<Env> = async (context) => {
                 ],
                 max_tokens: 1000
             });
-            translations.push(result.response?.trim() || text);
+
+            let translatedText = result.response?.trim() || text;
+
+            // 還原 HTML 標籤
+            const tagMap = textTagMaps[i];
+            tagMap.forEach((originalTag, placeholder) => {
+                // 使用 split/join 替換所有出現的代幣 (雖然通常只有一個)
+                translatedText = translatedText.split(placeholder).join(originalTag);
+            });
+
+            translations.push(translatedText);
         }
 
         for (let i = Math.min(maxTexts - 1, textPositions.length - 1); i >= 0; i--) {
