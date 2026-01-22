@@ -122,13 +122,17 @@ function ensureLangToggleButton(html: string): string {
     // 注意：如果按鈕存在但沒有綁定事件（來自靜態 HTML），我們可能需要重新注入或附加腳本
     // 簡單起見，如果發現是英文模式（通常意味著經過了翻譯處理），我們強制注入
 
-    // 先移除舊的按鈕（避免重複）
-    // html = html.replace(/<div[^>]*>\s*<button class="lang-toggle"[\s\S]*?<\/button>\s*<\/div>/g, '');
-
     // 如果已經有我們注入的腳本標記，則跳過
     if (html.includes('window.toggleLanguage = function()')) {
         return html;
     }
+
+    // 先移除舊的按鈕（避免重複）
+    // 移除包含 lang-toggle 的 button 及其外層 div（如果是 Flex wrapper）
+    html = html.replace(/<div[^>]*>\s*<button[^>]*class="[^"]*lang-toggle[^"]*"[\s\S]*?<\/button>\s*<\/div>/gi, '');
+    // 也要移除單獨的 button（以防沒有 wrapper 或結構不同）
+    html = html.replace(/<button[^>]*class="[^"]*lang-toggle[^"]*"[\s\S]*?<\/button>/gi, '');
+
 
     // 尋找插入點
     // 優先：Dark Mode 按鈕容器之後
@@ -183,8 +187,8 @@ export const onRequest: PagesFunction<Env> = async (context) => {
 
     // 目標語言：英文
     const targetLang = "en";
-    // 更新快取版本 v5
-    const cacheKey = `v5:${url.pathname}:${targetLang}`;
+    // 更新快取版本 v6
+    const cacheKey = `v6:${url.pathname}:${targetLang}`;
 
     // 3. 檢查 KV 快取
     if (context.env.TRANSLATION_CACHE) {
