@@ -11,7 +11,7 @@ function initGallery() {
   }
   
   if (typeof lightGallery === "undefined") {
-    console.error("LightGallery: [Error] Library \"lightGallery\" is not defined. Check CDN links in Head.tsx.");
+    console.error("LightGallery: [Error] Library lightGallery is not defined. Check CDN links in Head.tsx.");
     return;
   }
 
