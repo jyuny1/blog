@@ -19,24 +19,6 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 > **繪畫是合成（加法），攝影是分析（減法）。**
 > 這本書的核心就在於引導觀者看見攝影師如何從無限現實中「選擇並定義」出一個擁有獨立物質生命的物體。
 
-## 目錄
-- [照片的本質](#照片的本質)
-- [物質層面](#物質層面)
-- [描述層面](#描述層面)
-    - [平面 (Plane)](#平面-plane)
-    - [視點 (Point of View)](#視點-point-of-view)
-    - [邊框 (Frame)](#邊框-frame)
-    - [時間 (Time)](#時間-time)
-    - [聚焦 (Focus)](#聚焦-focus)
-- [心理層面與模型建構](#心理層面與模型建構)
-    - [心理運作機制 (Mental Level)](#心理運作機制-mental-level)
-    - [理論：心理層面定義](#理論物質層面定義)
-    - [理論：攝影師的反饋機制](#理論攝影師的反饋機制)
-    - [建造心理模型 (Mental Modeling)](#建造心理模型-mental-modeling)
-
----
-
-
 ---
 
 ## 照片的本質
