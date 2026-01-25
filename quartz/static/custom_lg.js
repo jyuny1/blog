@@ -32,6 +32,9 @@ function initGallery() {
     anchor.className = "lg-image";
     anchor.setAttribute("data-src", img.src);
     
+    // EXPLICITLY set empty sub-html to prevent filename display
+    anchor.setAttribute("data-sub-html", " ");
+    
     // Copy styles
     const width = img.getAttribute("width");
     if (width) {
@@ -67,8 +70,7 @@ function initGallery() {
         selector: ".lg-image",
         speed: 500,
         licenseKey: "0000-0000-000-0000",
-        // Disable captions from alt/title
-        getCaptionFromTitleOrAlt: false,
+        getCaptionFromTitleOrAlt: false, // Double safety
         mobileSettings: {
             controls: true,
             showCloseIcon: true,
@@ -103,7 +105,6 @@ window.addEventListener("load", () => {
   setTimeout(initGallery, 500);
 });
 
-// Fallback for very fast loads
 if (document.readyState === "complete") {
     setTimeout(initGallery, 500);
 }
