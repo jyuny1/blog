@@ -35,7 +35,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：羅伯特·法蘭克《旅館窗外的景象》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Robert_Frank_Hotel_HighRes.webp" width="500" alt="攝影/附件/Robert_Frank_Hotel_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Robert_Frank_Hotel_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -43,7 +43,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：約翰·戈塞奇《浪漫產業 #175》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/John_Gossage_Romantic_HighRes.webp" width="500" alt="攝影/附件/John_Gossage_Romantic_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/John_Gossage_Romantic_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -51,7 +51,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：迪特爾·阿佩爾特《鏡子上的呼吸痕跡》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Dieter_Appelt_Breath_HighRes.webp" width="500" alt="攝影/附件/Dieter_Appelt_Breath_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Dieter_Appelt_Breath_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -59,7 +59,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：沃克·艾文斯《家庭快照》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Walker_Evans_Snapshots.webp" width="500" alt="攝影/附件/Walker_Evans_Snapshots.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Walker_Evans_Snapshots.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -67,7 +67,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：無名氏《路邊的汽車》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Anon_Car_HighRes.webp" width="500" alt="攝影/附件/Anon_Car_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Anon_Car_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -83,7 +83,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：史蒂芬·蕭爾《義大利魯塞拉》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Shore_Italy_Boundaries.webp" width="500" alt="攝影/附件/Shore_Italy_Boundaries.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Shore_Italy_Boundaries.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -91,7 +91,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：安娜·圖林《1960年12月17日》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Anna_Turin_Color.webp" width="500" alt="攝影/附件/Anna_Turin_Color.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Anna_Turin_Color.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -99,7 +99,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：史蒂芬·蕭爾《假日旅館 28 號房間》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Shore_Holiday_Inn_HighRes.webp" width="500" alt="攝影/附件/Shore_Holiday_Inn_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Shore_Holiday_Inn_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -107,7 +107,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：喬爾·史坦費爾德《弗吉尼亞州麥克萊恩》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Sternfeld_Pumpkin_HighRes.webp" width="500" alt="攝影/附件/Sternfeld_Pumpkin_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Sternfeld_Pumpkin_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -115,7 +115,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：史蒂芬·蕭爾《德克薩斯州阿馬里洛》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Shore_Milk_HighRes.webp" width="500" alt="攝影/附件/Shore_Milk_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Shore_Milk_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -123,7 +123,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：湯瑪斯·德曼《水槽 》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Thomas_Demand_Sink_HighRes.webp" width="500" alt="攝影/附件/Thomas_Demand_Sink_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Thomas_Demand_Sink_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -131,7 +131,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：理查德·本森（黑白影調）
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Richard_Benson_Tone.webp" width="500" alt="攝影/附件/Richard_Benson_Tone.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Richard_Benson_Tone.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -139,7 +139,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：辛蒂·雪曼《無題電影劇照》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Sherman_Still_HighRes.webp" width="500" alt="攝影/附件/Sherman_Still_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Sherman_Still_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -147,7 +147,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：無名氏《女演員瓊·芳登宣傳照》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Anon_Press_HighRes.webp" width="500" alt="攝影/附件/Anon_Press_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Anon_Press_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -155,7 +155,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：貝恩德與希拉·貝歇《水塔》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Becher_Towers_HighRes.webp" width="500" alt="攝影/附件/Becher_Towers_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Becher_Towers_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -163,7 +163,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：沃克·艾文斯《佃農房間中的床鋪》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Evans_Bed_HighRes.webp" width="500" alt="攝影/附件/Evans_Bed_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Evans_Bed_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -185,14 +185,15 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 
 #### 平面 (Plane)
 > [!abstract] **蕭爾的語法論述：影像平面的「透明度」選擇**
-> 蕭爾指出，攝影師可以控制這張「紙」的透明感。這兩者沒有好壞優劣之分，而是攝影師引導觀者注意力的工具：> 1. **透明 (Transparent)** ：利用透視線引導觀者「穿透」相紙，進入 3D 空間。目的是讓觀者沈浸在風景中。
+> 蕭爾指出，攝影師可以控制這張「紙」的透明感。這兩者沒有好壞優劣之分，而是攝影師引導觀者注意力的工具：
+> > 1. **透明 (Transparent)** ：利用透視線引導觀者「穿透」相紙，進入 3D 空間。目的是讓觀者沈浸在風景中。
 > 2. **不透明 (Opaque)** ：利用密集的線條「攔截」視線，讓觀者停留在 2D 表面欣賞圖案。目的是讓觀者關注影像的形式與物質感。
 > 關鍵在於攝影師是否「自覺地」做出選擇。
 
 ### 案例：沃克·艾文斯《採礦小鎮》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Walker_Evans_Mining_Town.webp" width="500" alt="攝影/附件/Walker_Evans_Mining_Town.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Walker_Evans_Mining_Town.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -200,7 +201,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：卡爾頓·沃特金斯《碉堡岩》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Carleton_Watkins_Castle_Rock.webp" width="500" alt="攝影/附件/Carleton_Watkins_Castle_Rock.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Carleton_Watkins_Castle_Rock.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -208,7 +209,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：湯瑪斯·斯特魯斯《天堂 9》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Struth_Paradise_HighRes.webp" width="500" alt="攝影/附件/Struth_Paradise_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Struth_Paradise_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -216,7 +217,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：湯瑪斯·斯特魯斯《羅馬先賢祠》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Struth_Pantheon_HighRes.webp" width="500" alt="攝影/附件/Struth_Pantheon_HighRes.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Struth_Pantheon_HighRes.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -227,7 +228,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：李·弗里德蘭德《諾克斯維爾》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Lee_Friedlander_Knoxville.webp" width="500" alt="攝影/附件/Lee_Friedlander_Knoxville.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Lee_Friedlander_Knoxville.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -236,7 +237,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：安德烈·柯特茲《杜波內》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Andre_Kertesz_Dubonnet.webp" width="500" alt="攝影/附件/Andre_Kertesz_Dubonnet.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Andre_Kertesz_Dubonnet.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -244,7 +245,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：澤克·伯曼《靜物》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Zeke_Berman_Still_Life.webp" width="500" alt="攝影/附件/Zeke_Berman_Still_Life.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Zeke_Berman_Still_Life.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -263,12 +264,13 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 > *  **適合題材** ：風景攝影 (特別是大畫幅)、建築攝影、靜物攝影，或是探討視覺結構的作品 (如蕭爾)。
 > *  **優勢** ：賦予平凡事物一種 **紀念碑式的尊嚴** 與 **視覺權威感** ，讓照片成為自給自足的獨立宇宙。
 > **唯一的錯誤是「無意識」** ：最糟糕的構圖是既不順從現實，也不建立秩序，只是隨意地切斷。大師的境界在於清楚知道自己為何選擇這種語法。
+
 > [!info] **核心概念**
 > 邊框是照片與外界現實之間那條不可逾越的界線，它將內容與無限的世界分開。即使是攝影師對相機進行最微小的調整——例如只移動幾毫米，將一個微不足道的元素納入或排除在邊框之外都可能徹底改變觀者對照片的視覺反應和心理詮釋。這證明了邊框並非一個被動的容器，它是一個具有主動定義力的工具。攝影師透過邊框的切割，決定了什麼是重要的，什麼是被忽略的。這種對邊框的意識，是理解攝影師如何建構意義的關鍵。邊框的存在，使得照片從單純的現實片段，轉變為一個經過深思熟慮、擁有獨立語法的視覺聲明，每一條邊線都承載著攝影師的意圖與觀看權力。
 ### 案例：阿倫·斯金德《影子》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Aaron_Siskind_Shadow.webp" width="500" alt="攝影/附件/Aaron_Siskind_Shadow.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Aaron_Siskind_Shadow.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -276,7 +278,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：海倫·萊維特《紐約》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Helen_Levitt_New_York.webp" width="500" alt="攝影/附件/Helen_Levitt_New_York.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Helen_Levitt_New_York.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -284,7 +286,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：威廉·艾格斯頓《無題》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/William_Eggleston_Untitled.webp" width="500" alt="攝影/附件/William_Eggleston_Untitled.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/William_Eggleston_Untitled.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -292,7 +294,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：史蒂芬·蕭爾《埃爾帕索街》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Stephen_Shore_El_Paso.webp" width="500" alt="攝影/附件/Stephen_Shore_El_Paso.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Stephen_Shore_El_Paso.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -300,7 +302,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：歌川豐國《歌舞伎的場景》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Ukiyo_e_Scene.webp" width="500" alt="攝影/附件/Ukiyo_e_Scene.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Ukiyo_e_Scene.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -308,7 +310,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：保羅·格雷漢姆《無題（架上的硬幣）》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Paul_Graham_Coin.webp" width="500" alt="攝影/附件/Paul_Graham_Coin.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Paul_Graham_Coin.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -316,29 +318,32 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：菲利普-洛爾卡·迪科西亞《哈特福德》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/diCorcia_Hartford.webp" width="500" alt="攝影/附件/diCorcia_Hartford.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/diCorcia_Hartford.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
 > 迪科西亞在這張照片中展現了邊框如何「分割」內外世界並創造戲劇性的空間對比。畫面右側的窗戶框架將一名男子孤立在明亮的室內環境中，而左側則是幽暗、層疊的屋頂地景。邊框在這裡充當了「切片」的工具，它不僅界定了室內與室外的物理界線，更在視覺上強化了孤獨感與觀察者的視角。這種構圖方式讓觀者意識到，邊框的選擇決定了我們能看見多少「現實」，以及這些現實片段是如何被組織成一個具有敘事潛力的視覺宇宙。
+
 ### 案例：理查德·普林斯《無題（牛仔）》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Richard_Prince_Cowboy.webp" width="500" alt="攝影/附件/Richard_Prince_Cowboy.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Richard_Prince_Cowboy.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
 > 理查德·普林斯的《無題（牛仔）》系列，是一個關於「重構邊框」與「挪用」的複雜案例。普林斯並沒有自己拍攝牛仔，而是將萬寶路香菸廣告中的牛仔形象進行「二次翻拍」。他刻意地對原始廣告進行裁切、放大，並重新拍攝，使得這些原本用於商業宣傳的圖像，在新的邊框中獲得了全新的意義。蕭爾指出，這種「重構邊框」的行為，徹底改變了原始影像的語境和含義。當普林斯將這些熟悉的牛仔從廣告中剝離出來，重新呈現在藝術畫廊中時，觀者被迫去思考影像的來源、作者權以及視覺符號的生成。這張照片挑戰了我們對「原創性」的定義，證明了攝影的邊框不僅可以框取現實，更可以框取、挪用和重塑現有的影像。它揭示了影像在不同語境下，如何被重新編碼和詮釋，成為一個關於圖像流通與意義生產的深刻寓言。
+
 #### 時間 (Time)
 > [!abstract] **蕭爾的語法論述：時間作為描述工具：語法與轉化**
-> 為什麼「時間」屬於描述層面？蕭爾認為，因為快門速度決定了現實世界如何在照片上「被描繪」出來。它是一種主動的語法工具：> 1. **語法工具 (Grammar)** ：快門是時間的切割器。現實是流動的，但攝影師選擇 1/1000 秒（凝固）或 1 秒（模糊），直接決定了物體在照片上的 **視覺形態** （如波浪變玻璃，或流水變絲綢）。
+> 為什麼「時間」屬於描述層面？蕭爾認為，因為快門速度決定了現實世界如何在照片上「被描繪」出來。它是一種主動的語法工具：
+>  1. **語法工具 (Grammar)** ：快門是時間的切割器。現實是流動的，但攝影師選擇 1/1000 秒（凝固）或 1 秒（模糊），直接決定了物體在照片上的 **視覺形態** （如波浪變玻璃，或流水變絲綢）。
 > 2. **創造新視覺事實 (New Facts)** ：攝影能創造肉眼不可見的影像。例如極快快門下的「完美對稱」或極慢快門下的「流動軌跡」，這是在照片上重新發明的視覺秩序，而非單純的紀錄。
 > 3. **時間轉化為空間 (Time into Space)** ：在靜止的照片上，時間不再是時間，它變成了 **「空間特徵」** 。長時間曝光表現為模糊線條，短時間曝光表現為銳利邊緣。因為時間在照片上是可以被「看見」的質地，所以它屬於描述層面。
 
 ### 案例：蓋瑞·維諾格蘭德《德克薩斯州達拉斯農貿集市》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Garry_Winogrand_Cow.webp" width="500" alt="攝影/附件/Garry_Winogrand_Cow.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Garry_Winogrand_Cow.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -346,7 +351,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：拉里·芬克《54 街演播室夜總會》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Larry_Fink_Time.webp" width="500" alt="攝影/附件/Larry_Fink_Time.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Larry_Fink_Time.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -354,7 +359,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：托德·帕普喬治《祖馬海灘》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Papageorge_Zuma_Beach.webp" width="500" alt="攝影/附件/Papageorge_Zuma_Beach.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Papageorge_Zuma_Beach.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -362,7 +367,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：琳達·康納《睡著的嬰兒》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Linda_Connor_Baby.webp" width="500" alt="攝影/附件/Linda_Connor_Baby.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Linda_Connor_Baby.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -370,21 +375,22 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：愛德華·韋斯頓《青椒》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Edward_Weston_Pepper.webp" width="500" alt="攝影/附件/Edward_Weston_Pepper.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Edward_Weston_Pepper.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
 > 愛德華·韋斯頓的《青椒》是靜物攝影的巔峰之作，它完美詮釋了「靜止的時間」如何揭示事物的「永恆本質」。韋斯頓透過極長的曝光時間和精準的打光，將一顆看似普通的青椒，轉化為一個充滿生命力、具有雕塑感的抽象形態。在長時間的曝光下，青椒表面的細微紋理、光影的微妙變化，都被相機捕捉得淋漓盡致。這張照片沒有任何動態的元素，一切都是靜止的，彷彿時間在這一刻完全停止。蕭爾指出，正是這種對時間的絕對靜止，使得觀者得以超越青椒的日常用途，而深入其形體、線條和光澤所構成的純粹美學。這種處理方式，讓青椒不再只是一顆蔬菜，而成為了自然造物的永恆符號。韋斯頓的照片證明，攝影能夠透過時間的靜止，讓平凡的物體展現出其最深刻、最本質的存在，邀請觀者進入一種對形式與物質的沉思。
 #### 聚焦 (Focus)
 > [!abstract] **蕭爾的語法論述：視覺的權力等級與閱讀指令**
-> 聚焦不僅僅是讓物體變清楚的技術動作，而是攝影師行使 **「視覺權力」** 的手段。蕭爾認為攝影師透過聚焦達成三個目的：> 1. **建立視覺階級 (Hierarchy)** ：現實世界中萬物平等，但聚焦創造了不平等。清晰的主體被賦予最高權重，模糊的背景被迫退居次要。這是攝影師強行介入現實，定義「什麼是重要的」。
+> 聚焦不僅僅是讓物體變清楚的技術動作，而是攝影師行使 **「視覺權力」** 的手段。蕭爾認為攝影師透過聚焦達成三個目的：
+> 1. **建立視覺階級 (Hierarchy)** ：現實世界中萬物平等，但聚焦創造了不平等。清晰的主體被賦予最高權重，模糊的背景被迫退居次要。這是攝影師強行介入現實，定義「什麼是重要的」。
 > 2. **發出閱讀指令 (Instructions)** ：聚焦是留在照片上的導航路標。淺景深是獨裁的命令（「看這裡！」），強迫視線鎖定單一點；全景深是民主的邀請（「自由掃描」），讓觀者在畫面中自主遊走。
 > 3. **橋接物理與心理** ：眼睛從清晰區移動到模糊區的過程，模擬了人類在真實空間中的注意力切換，從而在平面的紙張上創造出心理上的「穿透感」。
 
 ### 案例：彼得·亨利·愛默生《在收割蘆葦期間》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Peter_Henry_Emerson_Focus.webp" width="500" alt="攝影/附件/Peter_Henry_Emerson_Focus.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Peter_Henry_Emerson_Focus.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -392,7 +398,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：朱迪思·喬伊·羅斯 選自「伊斯頓肖像」系列
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Ross_Easton_Portrait.webp" width="500" alt="攝影/附件/Ross_Easton_Portrait.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Ross_Easton_Portrait.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -400,7 +406,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：簡·格魯弗《無題》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Groover_Untitled.webp" width="500" alt="攝影/附件/Groover_Untitled.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Groover_Untitled.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -408,7 +414,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：無名氏《新奧爾良船塢電影宣傳劇照，羅蘭·溫特斯飾演陳查理》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Charlie_Chan_Still.webp" width="500" alt="攝影/附件/Charlie_Chan_Still.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Charlie_Chan_Still.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -416,7 +422,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：米奇·愛潑斯坦《無題》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Epstein_Untitled.webp" width="500" alt="攝影/附件/Epstein_Untitled.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Epstein_Untitled.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -424,7 +430,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：奎多·奎迪《里米尼北部》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Guidi_Rimini.webp" width="500" alt="攝影/附件/Guidi_Rimini.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Guidi_Rimini.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -432,7 +438,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：保羅·卡波尼格羅《死亡谷》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Caponigro_Death_Valley.webp" width="500" alt="攝影/附件/Caponigro_Death_Valley.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Caponigro_Death_Valley.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -440,7 +446,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：羅伯特·亞當斯《露天劇場和夏延山》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Robert_Adams_Focus.webp" width="500" alt="攝影/附件/Robert_Adams_Focus.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Robert_Adams_Focus.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -469,7 +475,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：弗雷德里克·薩默《玻璃》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Sommer_Glass.webp" width="500" alt="攝影/附件/Sommer_Glass.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Sommer_Glass.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -477,7 +483,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：貝倫尼斯·阿博特《港務局》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Abbott_Port_Authority.webp" width="500" alt="攝影/附件/Abbott_Port_Authority.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Abbott_Port_Authority.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -485,7 +491,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：保羅·卡波尼格羅《桃子》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Caponigro_Peaches.webp" width="500" alt="攝影/附件/Caponigro_Peaches.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Caponigro_Peaches.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -493,7 +499,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：沃克·艾文斯《加油站》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Evans_Gas_Station.webp" width="500" alt="攝影/附件/Evans_Gas_Station.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Evans_Gas_Station.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -501,29 +507,31 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：阿爾弗雷德·斯蒂格利茨《白楊樹》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Stieglitz_Poplars.webp" width="500" alt="攝影/附件/Stieglitz_Poplars.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Stieglitz_Poplars.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
-> 斯蒂格利茨這張作品是「建造心理模型」的極佳範例，即便它在直覺上顯得「不透明」且充滿壓迫感的紋理（Texture）。>  1. **心理模型的「主動性」** ：不同於透視鮮明的照片（如《先賢祠》）會主動「送給」觀者空間感，這張照片像是一道視覺屏障。現代觀者可能因缺乏耐性而選擇放棄，但對於留下來的觀者，大腦會被強迫在紛亂的樹枝間 **尋找秩序** 。這種「掙扎著去建立視覺規律」的過程，正是心理模型建構最核心、最主動的運作機制。
+> 斯蒂格利茨這張作品是「建造心理模型」的極佳範例，即便它在直覺上顯得「不透明」且充滿壓迫感的紋理（Texture）。
+>  1. **心理模型的「主動性」** ：不同於透視鮮明的照片（如《先賢祠》）會主動「送給」觀者空間感，這張照片像是一道視覺屏障。現代觀者可能因缺乏耐性而選擇放棄，但對於留下來的觀者，大腦會被強迫在紛亂的樹枝間 **尋找秩序** 。這種「掙扎著去建立視覺規律」的過程，正是心理模型建構最核心、最主動的運作機制。
 > 2. **深度感的補償機制** ：當描述層面極度飽和且不透明時，人類意識會產生補償本能。意念會在那層密不透風的紋理中試圖「逃離」平面，進而在腦海中 **擠壓** 出一個比物理描述更具厚度的心理空間。
 > 3. **「囚徒」與「威權性」** ：蕭爾選此為最佳範例，在於它體現了攝影師對目光的絕對操控。在透明照片中，觀者是悠閒的「遊客」；而在《白楊樹》中，觀者像是「囚徒」，被迫在紋理的牆上刻畫出空間。這證明了即便物理描述是扁平的，只要能引導高度的視覺掃描與組織，大腦依然能建構出深邃的心理模型。
 
 ### 案例：歐仁·阿杰《東方罌粟花》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Atget_Poppies.webp" width="500" alt="攝影/附件/Atget_Poppies.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Atget_Poppies.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
-> 阿杰這張作品初看之下技術老舊、構圖模糊且雜亂，但蕭爾選它作為總結案例，正是為了展示「一張紙如何變成一個幻象」的魔法過程：>  1. **層面連動的「轉譯挑戰」** ：這張照片展現了「照片的每個層面是由上一個層面的特性決定」。正因為影像「不夠清楚」，觀者的心理模型必須進行 **更大幅度的轉譯** 。大腦必須主動將那些模糊的線條與斑駁影調，拼湊成一個具備立體空間感的罌粟花田。
+> 阿杰這張作品初看之下技術老舊、構圖模糊且雜亂，但蕭爾選它作為總結案例，正是為了展示「一張紙如何變成一個幻象」的魔法過程：
+>  1. **層面連動的「轉譯挑戰」** ：這張照片展現了「照片的每個層面是由上一個層面的特性決定」。正因為影像「不夠清楚」，觀者的心理模型必須進行 **更大幅度的轉譯** 。大腦必須主動將那些模糊的線條與斑駁影調，拼湊成一個具備立體空間感的罌粟花田。
 > 2. **「混亂中的秩序」** ：花朵與葉片隨機生長，缺乏明顯視覺中心。這種「不清楚」反而強迫觀者的眼睛進行掃描與歸納。這就是心理模型的本質：將現實的混亂轉化為意識中的秩序。這張照片如同一場「大腦體操」，要求觀者從模糊質感中自己「建造」出空間模型。
 > 3. **「在場感」的誕生** ：這種「我也在那裡」的錯覺並非來自像素精度，而是來自心理模型的成功對接。蕭爾以此證明，攝影師不需要提供完美的「描述」，只需要提供足夠的「線索」（如重疊的線條與影調），剩下的全靠觀者的心理模型去「腦補」完成。
 
 ### 案例：杰夫·沃爾《街上的男子》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Wall_Man_Street.webp" width="500" alt="攝影/附件/Wall_Man_Street.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Wall_Man_Street.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -531,7 +539,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：威廉·艾格斯頓《無題》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Eggleston_Statue.webp" width="500" alt="攝影/附件/Eggleston_Statue.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Eggleston_Statue.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -539,7 +547,8 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 #### 心理層面定義
 ### 理論：攝影師的反饋機制
 > [!info] **核心概念**
-> 史蒂芬·蕭爾在書中強調的「反饋 (Feedback)」，是指攝影師透過不斷檢視影像結果，來校準自我觀看方式的學習循環。這並非指外在的評論，而是攝影師內部的一種自我對話機制，主要包含三個層次：>  1. **拍攝當下的反饋 (In-Camera)** ：
+> 史蒂芬·蕭爾在書中強調的「反饋 (Feedback)」，是指攝影師透過不斷檢視影像結果，來校準自我觀看方式的學習循環。這並非指外在的評論，而是攝影師內部的一種自我對話機制，主要包含三個層次：
+>  1. **拍攝當下的反饋 (In-Camera)** ：
 > 當攝影師透過觀景窗或毛玻璃觀看時，這是第一次將現實轉化為平面的時刻。攝影師在此時觀察邊框內的影像，意識到構圖、光影或焦點的不足，並即時調整相機。這是一個即時的物理修正過程。
 > 2. **沖洗後的反饋 (Post-Process)** ：
 > 這是更深層的學習。當照片沖洗出來後，攝影師拿著這張靜止的相紙，與拍攝當下的記憶進行比對。透過分析「為什麼照片看起來不像我當時感覺的樣子？」（例如立體感消失、雜訊過多），攝影師開始理解相機這台機器的物理語法，以及它如何不同於人眼。
@@ -551,7 +560,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：湯瑪斯·安南《小巷》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Thomas_Annan_Mental.webp" width="500" alt="攝影/附件/Thomas_Annan_Mental.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Thomas_Annan_Mental.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -559,7 +568,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：威廉·貝爾《卡納布峽谷乾河床，科羅拉多州河，朝南方向》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/William_Bell_Kanab_Wash.webp" width="500" alt="攝影/附件/William_Bell_Kanab_Wash.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/William_Bell_Kanab_Wash.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -568,7 +577,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：蓋瑞·維諾格蘭德《世博會》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Winogrand_Worlds_Fair.webp" width="500" alt="攝影/附件/Winogrand_Worlds_Fair.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Winogrand_Worlds_Fair.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -576,7 +585,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：威廉·艾格斯頓《無題》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Eggleston_Untitled_114.webp" width="500" alt="攝影/附件/Eggleston_Untitled_114.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Eggleston_Untitled_114.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -584,7 +593,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：埃米特·高恩《瓦迪西亞山谷》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Gowin_Wadi.webp" width="500" alt="攝影/附件/Gowin_Wadi.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Gowin_Wadi.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -592,7 +601,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：多蘿西亞·蘭格《第二個孩子》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Lange_Second_Child.webp" width="500" alt="攝影/附件/Lange_Second_Child.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Lange_Second_Child.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -600,7 +609,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：黛安·阿勃絲《陽光下坐在凳子上的婦人》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Arbus_Woman_Bench.webp" width="500" alt="攝影/附件/Arbus_Woman_Bench.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Arbus_Woman_Bench.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -608,7 +617,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：李·弗里德蘭德《愛達荷州》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Friedlander_Idaho_Correct.webp" width="500" alt="攝影/附件/Friedlander_Idaho_Correct.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Friedlander_Idaho_Correct.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -616,7 +625,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：法扎勒·謝赫《達米·哈拉克·吉洛》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Fazal_Sheikh_Portrait.webp" width="500" alt="攝影/附件/Fazal_Sheikh_Portrait.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Fazal_Sheikh_Portrait.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
@@ -624,7 +633,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ### 案例：肯尼思·約瑟夫森《紐約州》
 
 
-<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Josephson_New_York_State.webp" width="500" alt="攝影/附件/Josephson_New_York_State.jpg">
+<img src="https://img.ljy.app/the-nature-of-photographs-deep-read/Josephson_New_York_State.webp" width="500">
 
 
 > [!quote] **深度分析：為何選擇此案例？**
