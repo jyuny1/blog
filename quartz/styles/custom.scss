@@ -1,3 +1,8 @@
 @use "./base.scss";
 
 // put your custom CSS here!
+.center article {
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
