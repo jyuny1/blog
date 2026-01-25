@@ -1,9 +1,16 @@
 ---
-title: Liuju's Blog
+title: Kevin's Note
 ---
 
-Welcome to my digital garden.
+Amateur Underwater Photographer with a passion for UW Macro photography. Fascinated by the world of tiny critters. DM for inquiries.
+
+### Socials
+
+- [Instagram](https://www.instagram.com/7yuny1/)
+- [Facebook](https://www.facebook.com/ljy.photo/)
 
 ## Recent Posts
 
-- [[Shore-Nature-of-Photographs]]
+> [!example] Recent
+>
+> ![[Shore-Nature-of-Photographs]]
