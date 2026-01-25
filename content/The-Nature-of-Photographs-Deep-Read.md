@@ -30,7 +30,7 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
     - [聚焦 (Focus)](#聚焦-focus)
 - [心理層面與模型建構](#心理層面與模型建構)
     - [心理運作機制 (Mental Level)](#心理運作機制-mental-level)
-    - [理論：心理層面定義](#理論心理層面定義)
+    - [理論：心理層面定義](#理論物質層面定義)
     - [理論：攝影師的反饋機制](#理論攝影師的反饋機制)
     - [建造心理模型 (Mental Modeling)](#建造心理模型-mental-modeling)
 
