@@ -6,3 +6,8 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+// Fix bold text in callouts
+.callout-content strong {
+  font-weight: bold !important;
+}
