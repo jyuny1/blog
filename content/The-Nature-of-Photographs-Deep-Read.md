@@ -315,6 +315,24 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 > [!quote] **深度分析：為何選擇此案例？**
 > 透過控制聚焦，攝影師讓前景的人物清晰，背景模糊。這種處理方式直接引導了觀者的注意力，確立了畫面中的主次關係，說明聚焦是引導觀看順序的工具。
 
+###  案例：朱迪思·喬伊·羅斯 選自「伊斯頓肖像」系列
+![攝影/附件/Ross_Easton_Portrait.jpg](https://img.ljy.app/the-nature-of-photographs-deep-read/Ross_Easton_Portrait.webp)
+
+> [!quote] **深度分析：為何選擇此案例？**
+> 羅斯在這組肖像中展示了聚焦平面如何確立視覺與心理的優先權。雖然她增加了景深以減少背景的過度模糊，但畫面中仍有一個極其精確的清晰平面（通常是人物的眼神）。蕭爾指出，聚焦平面是吸引注意力的核心，它迫使觀者與被攝者產生直接的對峙感。清晰度的遞減暗示了空間的延伸，但聚焦的精確性則確保了觀者的意識能與主體產生深刻的連結。
+
+###  案例：簡·格魯弗《無題》
+![攝影/附件/Groover_Untitled.jpg](https://img.ljy.app/the-nature-of-photographs-deep-read/Groover_Untitled.webp)
+
+> [!quote] **深度分析：為何選擇此案例？**
+> 格魯弗利用大畫幅相機靈活的皮腔，打破了聚焦平面必須與底片平面平行的物理限制。在這張靜物照片中，聚焦平面被巧妙地操縱，甚至與影像平面產生垂直或傾斜的關係。蕭爾透過此案例展示，聚焦不僅是「看清」的手段，更是一種主動的「組織」工具。攝影師可以透過控制清晰區的走向，重新定義畫面的空間邏輯與視覺重量。
+
+###  案例：無名氏《新奧爾良船塢電影宣傳劇照，羅蘭·溫特斯飾演陳查理》
+![攝影/附件/Charlie_Chan_Still.jpg](https://img.ljy.app/the-nature-of-photographs-deep-read/Charlie_Chan_Still.webp)
+
+> [!quote] **深度分析：為何選擇此案例？**
+> 這張電影劇照展示了商業攝影如何利用聚焦來建立戲劇性的視覺階級。透過對特定平面（主角）的精確聚焦，以及前景與背景的刻意模糊，攝影師向觀者發出了明確的「閱讀指令」。蕭爾認為，這種對聚焦的操控有效地橋接了物理空間與心理空間，讓觀者在二維平面上感受到了一種具備敘事深度的心理模型。
+
 ###  案例：羅伯特·亞當斯《露天劇場和夏延山》
 ![攝影/附件/Robert_Adams_Focus.jpg](https://img.ljy.app/the-nature-of-photographs-deep-read/Robert_Adams_Focus.jpg)
 
