@@ -1,10 +1,16 @@
 ---
 title: 照片的本質精讀
 author: 斯蒂芬·肖爾 (Stephen Shore)
-tags: [攝影, 藝術理論, 視覺分析, 導讀]
+tags:
+  - 攝影
+  - 藝術理論
+  - 視覺分析
+  - 導讀
 status: 讀書筆記
 date: 2026-01-24
-aliases: [照片的本質精讀]
+aliases:
+  - 照片的本質精讀
+name: The-Nature-of-Photographs-Deep-Read
 ---
 
 # 照片的本質：深度導讀錄
