@@ -11,6 +11,7 @@ date: 2026-01-24
 aliases:
   - 照片的本質精讀
 name: The-Nature-of-Photographs-Deep-Read
+image: https://pub-2c43c3164634469cad7905bc1ccc2ae6.r2.dev/og-images/The-Nature-of-Photographs-Deep-Read.png
 ---
 
 # 照片的本質：深度導讀錄
