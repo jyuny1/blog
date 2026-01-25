@@ -333,6 +333,24 @@ image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 > [!quote] **深度分析：為何選擇此案例？**
 > 這張電影劇照展示了商業攝影如何利用聚焦來建立戲劇性的視覺階級。透過對特定平面（主角）的精確聚焦，以及前景與背景的刻意模糊，攝影師向觀者發出了明確的「閱讀指令」。蕭爾認為，這種對聚焦的操控有效地橋接了物理空間與心理空間，讓觀者在二維平面上感受到了一種具備敘事深度的心理模型。
 
+###  案例：米奇·愛潑斯坦《無題》
+![攝影/附件/Epstein_Untitled.jpg](https://img.ljy.app/the-nature-of-photographs-deep-read/Epstein_Untitled.webp)
+
+> [!quote] **深度分析：為何選擇此案例？**
+> 愛潑斯坦在這張彩色作品中展現了聚焦如何處理複雜的層次關係。透過對前景中隔著玻璃的人物與小狗進行精確聚焦，他創造了一種既親密又帶有隔閡的敘事空間。玻璃上的反射與背景的雜亂被柔和地虛化，這不僅引導了觀者的視線，更在描述層面上建立了一個關於「觀察與被觀察」的心理空間。
+
+###  案例：奎多·奎迪《里米尼北部》
+![攝影/附件/Guidi_Rimini.jpg](https://img.ljy.app/the-nature-of-photographs-deep-read/Guidi_Rimini.webp)
+
+> [!quote] **深度分析：為何選擇此案例？**
+> 奎迪這張工業地景照片展示了聚焦如何賦予平凡物體「紀念碑式」的尊嚴。透過對切割機與木材堆進行全景深的清晰描述，攝影師將這個混亂的工地轉化為一個充滿秩序的幾何圖案。在這裡，聚焦不再是為了強調單一主體，而是作為一種整體的組織力量，邀請觀者在畫面的每一處細節中「自由巡航」。
+
+###  案例：保羅·卡波尼格羅《死亡谷》
+![攝影/附件/Caponigro_Death_Valley.jpg](https://img.ljy.app/the-nature-of-photographs-deep-read/Caponigro_Death_Valley.webp)
+
+> [!quote] **深度分析：為何選擇此案例？**
+> 卡波尼格羅的《死亡谷》是從描述層面轉向心理層面的橋樑。雖然這張風景照具備極致的物理清晰度（全景深），但其真正力量在於它所激發的心理模型。觀者的視線從近景的褶皺岩石一路掃描到遠方的山峰，這種視覺上的全神貫注，讓觀者的大腦開始超越物理描述，轉而構建一個關於大地生命力與永恆性的內在體驗。這證明了精確的聚焦是建立強大心理模型的基礎。
+
 ###  案例：羅伯特·亞當斯《露天劇場和夏延山》
 ![攝影/附件/Robert_Adams_Focus.jpg](https://img.ljy.app/the-nature-of-photographs-deep-read/Robert_Adams_Focus.jpg)
 
