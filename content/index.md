@@ -13,4 +13,4 @@ Amateur Underwater Photographer with a passion for UW Macro photography. Fascina
 
 > [!example] Recent
 >
-> ![[Shore-Nature-of-Photographs]]
+> ![[照片的本質精讀]]
