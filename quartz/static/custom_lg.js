@@ -67,6 +67,8 @@ function initGallery() {
         selector: ".lg-image",
         speed: 500,
         licenseKey: "0000-0000-000-0000",
+        // Disable captions from alt/title
+        getCaptionFromTitleOrAlt: false,
         mobileSettings: {
             controls: true,
             showCloseIcon: true,
