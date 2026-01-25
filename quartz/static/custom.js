@@ -1,34 +1,39 @@
+
+let lgInstance = null;
+
 function initGallery() {
-  console.log("LightGallery: Attempting to initialize...");
+  console.log("LightGallery: [Diagnostic] Starting initialization...");
   
-  // Try multiple common Quartz content wrappers
   const contentElement = document.querySelector("article") || document.querySelector(".content") || document.querySelector("main");
   
   if (!contentElement) {
-    console.warn("LightGallery: No content wrapper found (article, .content, or main).");
+    console.warn("LightGallery: [Error] No content wrapper found. Lightbox cannot start.");
     return;
   }
   
   if (typeof lightGallery === "undefined") {
-    console.error("LightGallery: lightGallery library not loaded.");
+    console.error("LightGallery: [Error] Library "lightGallery" is not defined. Check CDN links in Head.tsx.");
     return;
   }
 
   const images = contentElement.querySelectorAll("img");
-  console.log(`LightGallery: Found ${images.length} images in content.`);
+  console.log(`LightGallery: [Info] Found ${images.length} images.`);
   
   let wrapCount = 0;
-  images.forEach(img => {
-    // Skip if already wrapped in a link or is an icon
-    if (img.closest("a")) return;
-    if (img.classList.contains("emoji") || (img.width > 0 && img.width < 50)) return;
+  images.forEach((img, idx) => {
+    if (img.closest("a")) {
+        console.log(`LightGallery: [Skip] Image ${idx} already has a link.`);
+        return;
+    }
+    // Filter out very small images or UI elements
+    if (img.width > 0 && img.width < 50 && !img.getAttribute("width")) return;
 
     const anchor = document.createElement("a");
     anchor.href = img.src;
     anchor.className = "lg-image";
     anchor.setAttribute("data-src", img.src);
     
-    // Copy width to anchor to maintain layout
+    // Copy styles
     const width = img.getAttribute("width");
     if (width) {
         anchor.style.display = "inline-block";
@@ -42,44 +47,62 @@ function initGallery() {
     }
   });
 
+  console.log(`LightGallery: [Info] Wrapped ${wrapCount} images.`);
+
   if (wrapCount > 0) {
-    console.log(`LightGallery: Wrapped ${wrapCount} images. Initializing gallery...`);
     try {
-      // Use window. prefix to be safe with global variables
+      if (lgInstance) {
+        console.log("LightGallery: [Clean] Destroying previous instance.");
+        lgInstance.destroy();
+      }
+
       const plugins = [];
-      if (typeof window.lgThumbnail !== "undefined") plugins.push(window.lgThumbnail);
-      if (typeof window.lgZoom !== "undefined") plugins.push(window.lgZoom);
-      if (typeof window.lgFullscreen !== "undefined") plugins.push(window.lgFullscreen);
+      if (window.lgThumbnail) plugins.push(window.lgThumbnail);
+      if (window.lgZoom) plugins.push(window.lgZoom);
+      if (window.lgFullscreen) plugins.push(window.lgFullscreen);
       
-      lightGallery(contentElement, {
+      console.log(`LightGallery: [Info] Activating with ${plugins.length} plugins.`);
+
+      lgInstance = lightGallery(contentElement, {
         plugins: plugins,
         selector: ".lg-image",
         speed: 500,
         licenseKey: "0000-0000-000-0000",
-        download: true,
-        counter: true
+        mobileSettings: {
+            controls: true,
+            showCloseIcon: true,
+            download: false
+        }
       });
-      console.log("LightGallery: Initialization successful.");
+      console.log("LightGallery: [Success] Initialization complete.");
     } catch (e) {
-      console.error("LightGallery: initialization failed:", e);
+      console.error("LightGallery: [Error] Initialization failed:", e);
     }
-  } else {
-    console.log("LightGallery: No images were wrapped.");
   }
 }
 
-// Quartz SPA navigation
+// Global click listener for debugging
+document.addEventListener("click", (e) => {
+    const target = e.target.closest(".lg-image");
+    if (target) {
+        console.log("LightGallery: [Debug] Click detected on wrapped image:", target.href);
+        if (!lgInstance) {
+            console.warn("LightGallery: [Debug] Clicked but lgInstance is null!");
+        }
+    }
+}, true);
+
 document.addEventListener("nav", () => {
-  console.log("LightGallery: Quartz Nav event detected");
-  // Small delay to ensure DOM is ready
-  setTimeout(initGallery, 300);
+  console.log("LightGallery: [Event] Quartz Nav detected.");
+  setTimeout(initGallery, 500);
 });
 
-// Initial load
+window.addEventListener("load", () => {
+  console.log("LightGallery: [Event] Window load detected.");
+  setTimeout(initGallery, 500);
+});
+
+// Fallback for very fast loads
 if (document.readyState === "complete") {
-  initGallery();
-} else {
-  window.addEventListener("load", () => {
-    setTimeout(initGallery, 300);
-  });
+    setTimeout(initGallery, 500);
 }
