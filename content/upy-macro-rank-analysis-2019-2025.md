@@ -1,17 +1,14 @@
 ---
 title: UPY 微距類目分析
 name: upy-macro-rank-analysis-2019-2025
+tags:
+- UPY
+- 水下攝影
+- 微距攝影
+- 視覺分析
 ---
 
 # UPY 微距類目分析
-
-> **分析師**：專業水下攝影師 (Antigravity System)
-> **發佈日期**：2026-02-05
-> **研究對象**：UPY (Underwater Photographer of the Year) 2019-2025 Macro Category Top 3
-> **核心方法論**：5-Zone Tonal Map (五級明度拆解) + EXIF Metadata Analysis
-> **字數預估**：3800 字
-
----
 
 ## 導讀
 
