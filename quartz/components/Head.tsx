@@ -87,7 +87,7 @@ export default (() => {
         <meta name="generator" content="Quartz" />
 
         {/* lightgallery styles */}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/css/lightgallery-bundle.min.css" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/css/lightgallery-bundle.min.css" data-persist="true" />
 
         {css.map((resource) => CSSResourceToStyleElement(resource, true))}
         {js
