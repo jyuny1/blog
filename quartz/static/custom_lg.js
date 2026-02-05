@@ -20,6 +20,12 @@ function initGallery() {
   
   let wrapCount = 0;
   images.forEach((img, idx) => {
+    if (img.classList.contains("lg-wrapped") || img.closest(".lg-image")) {
+        console.log(`LightGallery: [Skip] Image ${idx} already wrapped.`);
+        wrapCount++;
+        return;
+    }
+
     if (img.closest("a")) {
         console.log(`LightGallery: [Skip] Image ${idx} already has a link.`);
         return;
@@ -31,6 +37,7 @@ function initGallery() {
     anchor.href = img.src;
     anchor.className = "lg-image";
     anchor.setAttribute("data-src", img.src);
+    img.classList.add("lg-wrapped");
     
     // EXPLICITLY set empty sub-html to prevent filename display
     anchor.setAttribute("data-sub-html", " ");
@@ -49,7 +56,7 @@ function initGallery() {
     }
   });
 
-  console.log(`LightGallery: [Info] Wrapped ${wrapCount} images.`);
+  console.log(`LightGallery: [Info] Wrapped/Verified ${wrapCount} images.`);
 
   if (wrapCount > 0) {
     try {
