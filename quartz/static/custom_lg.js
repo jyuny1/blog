@@ -1,162 +1,151 @@
-let lgInstance = null;
+/**
+ * LightGallery 2.x for Quartz 4.0 (Ultra-Robust SPA Edition)
+ */
+
+window.lgInstance = window.lgInstance || null;
 
 /**
- * 清理可能殘留的包裹標記，確保每一頁導航後圖片狀態是乾淨的
+ * 核心：將圖片包裹在 a.lg-image 中
  */
-function cleanupStaleWrappers() {
-  document.querySelectorAll('img.lg-wrapped').forEach(img => {
-    if (!img.closest('.lg-image')) {
-      img.classList.remove('lg-wrapped');
-    }
-  });
-}
-
-/**
- * 核心初始化函數
- */
-function initGallery() {
-  console.log("LightGallery: [Diagnostic] Starting initialization cycle...");
-  
-  // 1. 查找當前頁面的內容容器
+function wrapImages() {
   const contentElement = document.querySelector("article") || document.querySelector(".content") || document.querySelector("main");
-  
-  if (!contentElement) {
-    console.warn("LightGallery: [Skip] No content container found.");
-    return;
-  }
-  
-  // 2. 庫檢查
-  if (typeof lightGallery === "undefined") {
-    console.error("LightGallery: [Error] library 'lightGallery' is not loaded.");
-    return;
-  }
-
-  // 3. 強制銷毀舊實例（不論當前頁面是否有圖片）
-  // 這是解決 SPA 導航後實例殘留問題的關鍵
-  if (lgInstance) {
-    console.log("LightGallery: [Clean] Destroying previous instance.");
-    try {
-      lgInstance.destroy();
-    } catch (e) {
-      console.warn("LightGallery: [Clean] Error destroying instance:", e);
-    }
-    lgInstance = null;
-  }
-
-  // 4. 清理狀態並準備包裹圖片
-  cleanupStaleWrappers();
+  if (!contentElement) return 0;
 
   const images = contentElement.querySelectorAll("img");
-  let wrapCount = 0;
-  
-  images.forEach((img) => {
-    // 避免重複包裹，也避免包裹已經有連結的圖片
-    if (img.closest(".lg-image") || img.closest("a")) return;
-    
-    // 過濾 UI 小圖
-    if (img.width > 0 && img.width < 50 && !img.getAttribute("width")) return;
+  let count = 0;
 
-    // 創建 a.lg-image 容器
+  images.forEach((img) => {
+    // 1. 檢查是否已經被包裹
+    if (img.closest(".lg-image")) {
+      count++;
+      return;
+    }
+
+    // 2. 檢查是否已經有外部連結
+    if (img.closest("a")) return;
+
+    // 3. 過濾太小的 UI 圖標
+    // 注意：初次加載時 width 可能為 0，所以我們主要看屬性
+    const wAttr = img.getAttribute("width");
+    if (wAttr && parseInt(wAttr) < 50) return;
+    if (img.complete && img.naturalWidth > 0 && img.naturalWidth < 50) return;
+
+    // 4. 執行包裹
     const anchor = document.createElement("a");
     anchor.href = img.src;
     anchor.className = "lg-image";
     anchor.setAttribute("data-src", img.src);
-    img.classList.add("lg-wrapped");
+    anchor.setAttribute("data-sub-html", " "); // 禁用自動標題
     
-    // 禁用 LightGallery 自動抓取 alt 當標題（通常會顯示檔名，很醜）
-    anchor.setAttribute("data-sub-html", " ");
-    
-    // 保持圖片寬度樣式
-    const width = img.getAttribute("width");
-    if (width) {
-        anchor.style.display = "inline-block";
-        anchor.style.width = isNaN(width) ? width + "px" : width;
+    // 複製寬度樣式
+    if (wAttr) {
+      anchor.style.display = "inline-block";
+      anchor.style.width = isNaN(wAttr) ? wAttr + "px" : wAttr + "px";
     }
 
     if (img.parentNode) {
       img.parentNode.insertBefore(anchor, img);
       anchor.appendChild(img);
-      wrapCount++;
+      img.classList.add("lg-wrapped");
+      count++;
     }
   });
 
-  // 5. 重新獲取當前容器內所有的燈箱項
-  const galleryItems = contentElement.querySelectorAll(".lg-image");
-  console.log(`LightGallery: [Info] Found ${galleryItems.length} images to bind.`);
+  return count;
+}
 
-  // 6. 如果有圖片，則初始化新實例
-  if (galleryItems.length > 0) {
+/**
+ * 初始化或重新整理 LightGallery 實例
+ */
+function refreshGallery() {
+  console.log("LightGallery: [Diagnostic] Refreshing...");
+  
+  const contentElement = document.querySelector("article") || document.querySelector(".content") || document.querySelector("main");
+  if (!contentElement) return;
+
+  if (typeof lightGallery === "undefined") {
+    console.error("LightGallery: [Error] Library not found.");
+    return;
+  }
+
+  const itemsCount = wrapImages();
+  console.log(`LightGallery: [Info] Total items found: ${itemsCount}`);
+
+  if (itemsCount > 0) {
     try {
+      // 如果實例已存在，先銷毀它，確保綁定到最新的 DOM 結構
+      if (window.lgInstance) {
+        window.lgInstance.destroy();
+        window.lgInstance = null;
+      }
+
       const plugins = [];
       if (window.lgThumbnail) plugins.push(window.lgThumbnail);
       if (window.lgZoom) plugins.push(window.lgZoom);
       if (window.lgFullscreen) plugins.push(window.lgFullscreen);
-      
-      console.log(`LightGallery: [Action] Initializing with ${plugins.length} plugins.`);
 
-      lgInstance = lightGallery(contentElement, {
+      // 重新初始化，綁定到內容容器
+      window.lgInstance = lightGallery(contentElement, {
         plugins: plugins,
         selector: ".lg-image",
         speed: 500,
         licenseKey: "0000-0000-000-0000",
         getCaptionFromTitleOrAlt: false,
         mobileSettings: {
-            controls: true,
-            showCloseIcon: true,
-            download: false
+          controls: true,
+          showCloseIcon: true,
+          download: false
         }
       });
-      console.log("LightGallery: [Success] Initialization complete.");
+      console.log("LightGallery: [Success] New instance created.");
     } catch (e) {
-      console.error("LightGallery: [Error] Initialization failed:", e);
+      console.error("LightGallery: [Error] Failed to initialize:", e);
     }
   }
 }
 
-/**
- * 監聽 DOM 變化（MutationObserver）
- * 這是為了捕捉 Quartz 在導航後異步插入內容的行為
- */
-let observer = null;
-function setupObserver() {
-    if (observer) return;
-    
-    observer = new MutationObserver((mutations) => {
-        for (const mutation of mutations) {
-            if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
-                // 如果發現 article 內容發生變化且有新圖片加入
-                const article = document.querySelector('article');
-                if (article && article.querySelector('img:not(.lg-wrapped)')) {
-                    console.log("LightGallery: [Observer] Detected new images, re-initializing.");
-                    initGallery();
-                    break;
-                }
-            }
-        }
-    });
-    
-    observer.observe(document.body, { childList: true, subtree: true });
-}
+// ---------------------------------------------------------------------------
+// 監控與事件
+// ---------------------------------------------------------------------------
 
-// 事件監聽：Quartz 導航事件
+// 1. 監聽 Quartz 導航 (SPA 核心)
 document.addEventListener("nav", () => {
-  console.log("LightGallery: [Event] Quartz Nav.");
-  // 雙重保險：立即執行 + 延遲執行（等待 micromorph 完成）
-  initGallery();
-  setTimeout(initGallery, 300);
+  console.log("LightGallery: [Event] Nav detected.");
+  // 延遲兩次執行，確保內容已填入且圖片已渲染
+  setTimeout(refreshGallery, 100);
+  setTimeout(refreshGallery, 500);
 });
 
-// 事件監聽：初次加載
-window.addEventListener("load", () => {
-  console.log("LightGallery: [Event] Window load.");
-  initGallery();
-  setupObserver();
-});
-
-// 立即執行（保險）
-if (document.readyState === "complete") {
-    initGallery();
-    setupObserver();
-} else {
-    initGallery(); // 即使 DOM 未完全 Ready 也先嘗試包裹已知部分
+// 2. 監聽 DOM 變化 (防漏)
+let lgObserver = null;
+if (!window.lgObserverActive) {
+  lgObserver = new MutationObserver((mutations) => {
+    for (const mutation of mutations) {
+      if (mutation.type === 'childList' && mutation.addedNodes.length > 0) {
+        const hasUnwrappedImg = document.querySelector('article img:not(.lg-wrapped)');
+        if (hasUnwrappedImg) {
+          refreshGallery();
+          break;
+        }
+      }
+    }
+  });
+  lgObserver.observe(document.body, { childList: true, subtree: true });
+  window.lgObserverActive = true;
 }
+
+// 3. 初次加載與備援
+window.addEventListener("load", refreshGallery);
+if (document.readyState === "complete") refreshGallery();
+
+// 4. 極端備援：點擊攔截 (解決用戶說的“點擊後修復”問題)
+// 如果用戶點擊了一個圖片但沒有彈出燈箱，我們捕捉它
+document.addEventListener("click", (e) => {
+  const img = e.target.closest("article img");
+  if (img && !img.closest(".lg-image")) {
+    console.log("LightGallery: [Rescue] Unwrapped image clicked. Refreshing...");
+    refreshGallery();
+    // 讓這次點擊無效，用戶下次點擊就會有燈箱
+    // 或者乾脆手動開啟（較複雜，先 refresh 就好）
+  }
+}, true);

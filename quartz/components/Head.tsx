@@ -99,7 +99,7 @@ export default (() => {
         <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/plugins/thumbnail/lg-thumbnail.min.js" defer data-persist="true"></script>
         <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/plugins/zoom/lg-zoom.min.js" defer data-persist="true"></script>
         <script src="https://cdn.jsdelivr.net/npm/lightgallery@2.7.2/plugins/fullscreen/lg-fullscreen.min.js" defer data-persist="true"></script>
-        <script src={joinSegments(baseDir, "static/custom_lg.js")} defer data-persist="true"></script>
+        <script src="/static/custom_lg.js" defer data-persist="true"></script>
         {additionalHead.map((resource) => {
           if (typeof resource === "function") {
             return resource(fileData)
