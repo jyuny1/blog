@@ -3,6 +3,7 @@ let lgInstance = null;
 function initGallery() {
   console.log("LightGallery: [Diagnostic] Starting initialization...");
   
+  // 優先查找 article，這是內容主體
   const contentElement = document.querySelector("article") || document.querySelector(".content") || document.querySelector("main");
   
   if (!contentElement) {
@@ -15,34 +16,40 @@ function initGallery() {
     return;
   }
 
+  // 獲取所有圖片
   const images = contentElement.querySelectorAll("img");
   console.log(`LightGallery: [Info] Found ${images.length} images.`);
   
   let wrapCount = 0;
   images.forEach((img, idx) => {
+    // 檢查是否已經被包裹 (防止重複執行時產生嵌套)
+    // 我們同時檢查 class 和是否已經在 .lg-image 內
     if (img.classList.contains("lg-wrapped") || img.closest(".lg-image")) {
-        console.log(`LightGallery: [Skip] Image ${idx} already wrapped.`);
-        wrapCount++;
+        // 即使已經包裹，我們也記錄下來，確保 wrapCount 正確反映當前頁面狀態
+        wrapCount++; 
         return;
     }
 
+    // 如果圖片已經有超連結，通常不應該再包裹一層 Lightbox
     if (img.closest("a")) {
         console.log(`LightGallery: [Skip] Image ${idx} already has a link.`);
         return;
     }
-    // Filter out very small images or UI elements
+
+    // 過濾掉太小的圖片（如圖標）
     if (img.width > 0 && img.width < 50 && !img.getAttribute("width")) return;
 
+    // 創建包裹元素
     const anchor = document.createElement("a");
     anchor.href = img.src;
     anchor.className = "lg-image";
     anchor.setAttribute("data-src", img.src);
     img.classList.add("lg-wrapped");
     
-    // EXPLICITLY set empty sub-html to prevent filename display
+    // 禁用自動標題
     anchor.setAttribute("data-sub-html", " ");
     
-    // Copy styles
+    // 保留寬度設定
     const width = img.getAttribute("width");
     if (width) {
         anchor.style.display = "inline-block";
@@ -60,9 +67,11 @@ function initGallery() {
 
   if (wrapCount > 0) {
     try {
+      // 銷毀舊實例（非常重要，SPA 導航必須重置）
       if (lgInstance) {
         console.log("LightGallery: [Clean] Destroying previous instance.");
         lgInstance.destroy();
+        lgInstance = null;
       }
 
       const plugins = [];
@@ -72,12 +81,13 @@ function initGallery() {
       
       console.log(`LightGallery: [Info] Activating with ${plugins.length} plugins.`);
 
+      // 初始化 LightGallery
       lgInstance = lightGallery(contentElement, {
         plugins: plugins,
         selector: ".lg-image",
         speed: 500,
         licenseKey: "0000-0000-000-0000",
-        getCaptionFromTitleOrAlt: false, // Double safety
+        getCaptionFromTitleOrAlt: false,
         mobileSettings: {
             controls: true,
             showCloseIcon: true,
@@ -91,27 +101,29 @@ function initGallery() {
   }
 }
 
-// Global click listener for debugging
-document.addEventListener("click", (e) => {
-    const target = e.target.closest(".lg-image");
-    if (target) {
-        console.log("LightGallery: [Debug] Click detected on wrapped image:", target.href);
-        if (!lgInstance) {
-            console.warn("LightGallery: [Debug] Clicked but lgInstance is null!");
-        }
+// 在 SPA 切換前清理實例
+document.addEventListener("prenav", () => {
+    if (lgInstance) {
+        console.log("LightGallery: [SPA] Pre-nav cleanup.");
+        lgInstance.destroy();
+        lgInstance = null;
     }
-}, true);
+});
 
+// 監聽 Quartz 的導航事件
 document.addEventListener("nav", () => {
   console.log("LightGallery: [Event] Quartz Nav detected.");
-  setTimeout(initGallery, 500);
+  // 增加一點延遲確保 DOM 已完全穩定
+  setTimeout(initGallery, 300);
 });
 
+// 監聽初次加載
 window.addEventListener("load", () => {
   console.log("LightGallery: [Event] Window load detected.");
-  setTimeout(initGallery, 500);
+  initGallery();
 });
 
+// 確保如果腳本加載較晚也能執行
 if (document.readyState === "complete") {
-    setTimeout(initGallery, 500);
+    initGallery();
 }
