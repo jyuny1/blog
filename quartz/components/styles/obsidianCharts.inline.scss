@@ -1,0 +1,20 @@
+.obsidian-chart {
+  position: relative;
+  width: 100%;
+  height: 22rem;
+  margin: 1.5rem 0;
+  padding: 0.75rem 0.25rem 0.25rem;
+}
+
+.obsidian-chart > canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+@media (max-width: 800px) {
+  .obsidian-chart {
+    height: 18rem;
+    margin: 1.25rem 0;
+    padding-top: 0.5rem;
+  }
+}
