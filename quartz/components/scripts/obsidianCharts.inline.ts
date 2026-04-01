@@ -90,6 +90,42 @@ function buildDatasets(config: ChartConfig) {
   })
 }
 
+function yAxisBounds(config: ChartConfig) {
+  const values = (config.series ?? [])
+    .flatMap((series) => series.data ?? [])
+    .filter((value): value is number => typeof value === "number" && Number.isFinite(value))
+
+  if (values.length === 0) {
+    return {}
+  }
+
+  const min = Math.min(...values)
+  const max = Math.max(...values)
+
+  if (config.type === "bar") {
+    return {
+      beginAtZero: Boolean(config.beginAtZero),
+    }
+  }
+
+  if (min === max) {
+    const margin = Math.abs(min || 1) * 0.1
+    return {
+      beginAtZero: false,
+      suggestedMin: min - margin,
+      suggestedMax: max + margin,
+    }
+  }
+
+  const span = max - min
+  const margin = span * 0.12
+  return {
+    beginAtZero: false,
+    suggestedMin: min - margin,
+    suggestedMax: max + margin,
+  }
+}
+
 function renderCharts() {
   if (!window.Chart) {
     return
@@ -119,6 +155,7 @@ function renderCharts() {
 
     const datasets = buildDatasets(config)
     const type = config.type === "bar" ? "bar" : "line"
+    const yBounds = yAxisBounds(config)
 
     const chart = new window.Chart(canvas, {
       type,
@@ -166,7 +203,7 @@ function renderCharts() {
             },
           },
           y: {
-            beginAtZero: Boolean(config.beginAtZero),
+            ...yBounds,
             title: {
               display: Boolean(config.yTitle),
               text: config.yTitle,
