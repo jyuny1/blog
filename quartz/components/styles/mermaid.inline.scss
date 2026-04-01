@@ -33,6 +33,55 @@ pre {
     opacity: 1;
     transition: 0.2s;
   }
+
+  &:has(> code.mermaid[data-clipboard*="xychart-beta"]) {
+    svg {
+      .domain,
+      .tick line,
+      .outer-tick,
+      .inner-tick {
+        stroke: var(--darkgray) !important;
+      }
+
+      text,
+      tspan {
+        fill: var(--dark) !important;
+      }
+
+      .plot,
+      .plot > *,
+      .line-plot-0,
+      .line-plot-1,
+      .line-plot-2,
+      .line-plot-3 {
+        stroke-width: 3px !important;
+      }
+
+      .line-plot-0,
+      .plot > .line-plot-0,
+      .plot > :nth-child(1) {
+        stroke: var(--secondary) !important;
+      }
+
+      .line-plot-1,
+      .plot > .line-plot-1,
+      .plot > :nth-child(2) {
+        stroke: var(--tertiary) !important;
+      }
+
+      .line-plot-2,
+      .plot > .line-plot-2,
+      .plot > :nth-child(3) {
+        stroke: var(--darkgray) !important;
+      }
+
+      .line-plot-3,
+      .plot > .line-plot-3,
+      .plot > :nth-child(4) {
+        stroke: var(--gray) !important;
+      }
+    }
+  }
 }
 
 #mermaid-container {
