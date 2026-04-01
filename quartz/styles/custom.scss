@@ -5,6 +5,41 @@
   max-width: 800px;
   margin-left: auto;
   margin-right: auto;
+  font-size: 1.08rem;
+  line-height: 1.82;
+}
+
+.center article p,
+.center article li,
+.center article td,
+.center article blockquote {
+  font-size: 1.08rem;
+}
+
+.center article h1 {
+  font-size: 2.2rem;
+}
+
+.center article h2 {
+  font-size: 1.55rem;
+}
+
+.center article h3 {
+  font-size: 1.22rem;
+}
+
+@media all and (max-width: 800px) {
+  .center article {
+    font-size: 1.03rem;
+    line-height: 1.75;
+  }
+
+  .center article p,
+  .center article li,
+  .center article td,
+  .center article blockquote {
+    font-size: 1.03rem;
+  }
 }
 
 // Fix bold text in callouts
