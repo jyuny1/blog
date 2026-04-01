@@ -15,6 +15,8 @@
 .center article blockquote {
   font-size: 1.08rem;
   line-height: 2.02;
+  text-align: justify;
+  text-justify: inter-ideograph;
 }
 
 .center article p,
@@ -54,6 +56,8 @@
   .center article blockquote {
     font-size: 1.03rem;
     line-height: 1.92;
+    text-align: justify;
+    text-justify: inter-ideograph;
   }
 }
 
