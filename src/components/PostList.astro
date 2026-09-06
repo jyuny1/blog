@@ -1,0 +1,33 @@
+---
+import type { CollectionEntry } from "astro:content"
+import { formatDate, readingTime } from "../consts"
+
+interface Props {
+  posts: CollectionEntry<"blog">[]
+  headingLevel?: "h2" | "h3"
+}
+
+const { posts, headingLevel = "h2" } = Astro.props
+const Heading = headingLevel
+---
+
+<ul class="post-list">
+  {
+    posts.map((post) => (
+      <li>
+        <a class="post-link" href={`/posts/${post.id}/`}>
+          <div class="post-heading">
+            <Heading>{post.data.title}</Heading>
+            <span aria-hidden="true">↗</span>
+          </div>
+          {post.data.description && <p>{post.data.description}</p>}
+          <div class="post-meta">
+            <time datetime={post.data.date?.toISOString()}>{formatDate(post.data.date)}</time>
+            <span>{readingTime(post.body)} min read</span>
+            {post.data.tags.length > 0 && <span>{post.data.tags.slice(0, 2).join(" · ")}</span>}
+          </div>
+        </a>
+      </li>
+    ))
+  }
+</ul>

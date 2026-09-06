@@ -1,11 +1,7 @@
 .DS_Store
-.gitignore
-node_modules
-public
-prof
-tsconfig.tsbuildinfo
-.obsidian
-.quartz-cache
-private/
-.replit
-replit.nix
+node_modules/
+dist/
+.astro/
+.env*
+!.env.example
+*.log

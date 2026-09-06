@@ -1,0 +1,29 @@
+---
+import { getCollection } from "astro:content"
+import { isPublished } from "../../consts"
+import BaseLayout from "../../layouts/BaseLayout.astro"
+
+const posts = await getCollection("blog", ({ data }) => isPublished(data))
+const tags = [...new Set(posts.flatMap((post) => post.data.tags))]
+  .map((tag) => ({ tag, count: posts.filter((post) => post.data.tags.includes(tag)).length }))
+  .sort((a, b) => a.tag.localeCompare(b.tag, "zh-Hant"))
+---
+
+<BaseLayout title="Tags" description="Browse Kevin's notes by topic.">
+  <section class="page-shell page-intro">
+    <p class="eyebrow">Index</p>
+    <h1>Tags</h1>
+    <p class="lede">依主題瀏覽所有公開文章。</p>
+  </section>
+  <ul class="tag-index page-shell">
+    {
+      tags.map(({ tag, count }) => (
+        <li>
+          <a href={`/tags/${encodeURIComponent(tag)}/`}>
+            <span>{tag}</span><span>{count.toString().padStart(2, "0")}</span>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>

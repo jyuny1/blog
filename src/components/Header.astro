@@ -1,0 +1,18 @@
+---
+import { PORTFOLIO_URL, SITE_TITLE } from "../consts"
+
+const pathname = Astro.url.pathname
+const current = (path: string) =>
+  path === "/" ? pathname === "/" : pathname.startsWith(path)
+---
+
+<header class="site-header">
+  <a class="brand" href="/" aria-label={`${SITE_TITLE} home`}>
+    <span class="brand-title">{SITE_TITLE}</span>
+  </a>
+  <nav class="site-nav" aria-label="主要導覽">
+    <a href="/" aria-current={current("/") ? "page" : undefined}>Notes</a>
+    <a href="/about/" aria-current={current("/about") ? "page" : undefined}>About</a>
+    <a href={PORTFOLIO_URL}>Portfolio</a>
+  </nav>
+</header>

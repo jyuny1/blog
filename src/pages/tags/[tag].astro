@@ -1,0 +1,33 @@
+---
+import { getCollection, type CollectionEntry } from "astro:content"
+import PostList from "../../components/PostList.astro"
+import { byNewest, isPublished } from "../../consts"
+import BaseLayout from "../../layouts/BaseLayout.astro"
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog", ({ data }) => isPublished(data))
+  const tags = [...new Set(posts.flatMap((post) => post.data.tags))]
+  return tags.map((tag) => ({
+    params: { tag },
+    props: { tag, posts: posts.filter((post) => post.data.tags.includes(tag)).sort(byNewest) },
+  }))
+}
+
+interface Props {
+  tag: string
+  posts: CollectionEntry<"blog">[]
+}
+
+const { tag, posts } = Astro.props
+---
+
+<BaseLayout title={tag} description={`以「${tag}」標記的文章。`}>
+  <section class="page-shell page-intro">
+    <p class="eyebrow">Topic</p>
+    <h1>{tag}</h1>
+    <p class="lede">{posts.length} 篇文章</p>
+  </section>
+  <section class="page-shell">
+    <PostList {posts} />
+  </section>
+</BaseLayout>

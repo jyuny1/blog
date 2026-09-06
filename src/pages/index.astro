@@ -1,0 +1,15 @@
+---
+import { getCollection } from "astro:content"
+import PostList from "../components/PostList.astro"
+import { byNewest, isPublished } from "../consts"
+import BaseLayout from "../layouts/BaseLayout.astro"
+
+const posts = (await getCollection("blog", ({ data }) => isPublished(data))).sort(byNewest)
+---
+
+<BaseLayout>
+  <section class="page-shell latest-posts">
+    <h1 class="visually-hidden">Notes</h1>
+    <PostList {posts} />
+  </section>
+</BaseLayout>

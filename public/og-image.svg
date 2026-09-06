@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0a0a0a"/>
+  <circle cx="1040" cy="110" r="220" fill="none" stroke="#d4af37" stroke-opacity=".25" stroke-width="2"/>
+  <path d="M0 500c210-80 350-20 530-70s300-150 670-95v295H0z" fill="#111"/>
+  <text x="90" y="280" fill="#fff" font-family="Georgia,serif" font-size="92">Kevin's Note</text>
+  <text x="96" y="345" fill="#d4af37" font-family="Arial,sans-serif" font-size="20" letter-spacing="7">PHOTOGRAPHY · NOTES</text>
+  <line x1="95" y1="390" x2="420" y2="390" stroke="#333"/>
+</svg>
