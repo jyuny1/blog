@@ -12,9 +12,9 @@
   --selection: rgb(17 17 17 / 12%);
   --content: 760px;
   --wide: 1100px;
-  --font-ui: "Noto Sans TC", "PingFang TC", "Hiragino Sans CNS", "Heiti TC", ui-sans-serif, system-ui, sans-serif;
-  --font-serif: "Source Serif 4", "Noto Serif TC", "Source Han Serif TC", "Songti TC", serif;
-  --font-display: "Source Serif 4", "Noto Serif TC", "Source Han Serif TC", serif;
+  --font-ui: "Noto Sans TC", "Microsoft JhengHei UI", "Microsoft JhengHei", "PingFang TC", "Hiragino Sans CNS", "Heiti TC", ui-sans-serif, system-ui, sans-serif;
+  --font-serif: "Source Serif 4", "Noto Serif TC", "Source Han Serif TC", "Microsoft JhengHei", serif;
+  --font-display: "Source Serif 4", "Noto Serif TC", "Source Han Serif TC", "Microsoft JhengHei", serif;
   --font-mono: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
   font-family: var(--font-ui);
   font-optical-sizing: auto;
@@ -221,7 +221,7 @@ button, input { font: inherit; }
 .prose li { margin: .45em 0; }
 .prose a { color: var(--text-strong); text-decoration-color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .prose a:hover { color: var(--accent); }
-.prose strong { color: var(--text-strong); }
+.prose strong { color: var(--text-strong); font-weight: 700; }
 .prose mark { background: var(--selection); color: inherit; padding: .04em .15em; }
 .prose img { border-radius: 3px; margin: 2.2rem auto; }
 .prose hr { border: 0; border-top: 1px solid var(--line); margin: 3rem 0; }
