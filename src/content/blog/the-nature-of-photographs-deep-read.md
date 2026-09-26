@@ -11,6 +11,8 @@ status: 讀書筆記
 date: 2026-01-24
 aliases:
 name: The-Nature-of-Photographs-Deep-Read
+permalink: the-nature-of-photographs-deep-read
+published: true
 image: https://img.ljy.app/og-images/The-Nature-of-Photographs-Deep-Read.png
 ---
 ## 照片的本質

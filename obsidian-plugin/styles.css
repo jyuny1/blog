@@ -1,0 +1,24 @@
+.ljy-publisher-log {
+  background: var(--background-secondary);
+  border: 1px solid var(--background-modifier-border);
+  border-radius: var(--radius-s);
+  font-family: var(--font-monospace);
+  font-size: var(--font-smaller);
+  max-height: 45vh;
+  overflow: auto;
+  padding: var(--size-4-3);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.ljy-publisher-summary {
+  margin-bottom: var(--size-4-3);
+  white-space: pre-wrap;
+}
+
+.ljy-publisher-actions {
+  display: flex;
+  gap: var(--size-4-2);
+  justify-content: flex-end;
+  margin-top: var(--size-4-4);
+}

@@ -4,8 +4,7 @@ export const SITE_DESCRIPTION =
 export const SITE_URL = "https://blog.ljy.app"
 export const PORTFOLIO_URL = "https://portfolio.ljy.app"
 
-export const isPublished = (data: { draft?: boolean; status?: string }) =>
-  !data.draft && data.status?.toLowerCase() !== "draft"
+export const isPublished = (data: { published?: boolean }) => data.published === true
 
 export const byNewest = <T extends { data: { date?: Date } }>(a: T, b: T) =>
   (b.data.date?.getTime() ?? 0) - (a.data.date?.getTime() ?? 0)

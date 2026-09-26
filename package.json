@@ -9,7 +9,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "publish:images": "python publish.py"
+    "test:publisher": ".venv/bin/python -m unittest discover -s tests -v",
+    "build:plugin": "npm --prefix obsidian-plugin run build",
+    "publish:blog": ".venv/bin/python publish.py"
   },
   "dependencies": {
     "@astrojs/markdown-remark": "^7.3.0",

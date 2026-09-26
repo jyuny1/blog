@@ -3,6 +3,8 @@ title: UPY 微距類目分析
 description: 從 2019 至 2025 年得獎作品，分析 Underwater Photographer of the Year 微距類目的視覺趨勢與評選邏輯。
 date: 2026-02-06
 name: upy-macro-rank-analysis-2019-2025
+permalink: upy-macro-rank-analysis-2019-2025
+published: true
 tags:
 - UPY
 - 水下攝影

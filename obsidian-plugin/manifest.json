@@ -1,0 +1,9 @@
+{
+  "id": "ljy-blog-publisher",
+  "name": "LJY Blog Publisher",
+  "version": "1.0.0",
+  "minAppVersion": "1.5.0",
+  "description": "Validate, build, and publish blog.ljy.app posts from Obsidian through WSL.",
+  "author": "Kevin Liu",
+  "isDesktopOnly": true
+}
