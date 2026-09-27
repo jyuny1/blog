@@ -78,7 +78,7 @@ Nikon 在 Z 接環推出了 Nikon Z MC 50mm，但它和 SEL50M28 一樣是外對
    ![Pasted image 20260926114924](https://img.ljy.app/blog-assets/0e3a367e03d672d1011f939619cdfb3d8f6b94492b1c61ed9f92f8f7784f6068.png)
 
 ## 濕鏡：用百微補上中焦段
-中焦段不一定要靠原生鏡頭。Nauticam 與 Marelux 各自推出外接濕鏡，裝在 flat port 前面，可以把 100mm、105mm 這類百微鏡頭的視角，轉成接近 60mm 鏡頭的視角。這個方案不綁定品牌，Canon 和 SONY 的全畫幅機身都可以用百微搭配 MFO-3 或 MV60 補上中焦段。**在不對畫質妥協的前提下，這是不讓機身進入 APS-C 裁切，也能避開外對焦 50mm 在 flat port 下的 port 長度問題的解決方案。**對 Canon 用戶來說，這是使用全畫幅機身、又想拍中焦段時的唯一做法
+中焦段不一定要靠原生鏡頭。Nauticam 與 Marelux 各自推出外接濕鏡，裝在 flat port 前面，可以把 100mm、105mm 這類百微鏡頭的視角，轉成接近 60mm 鏡頭的視角。這個方案不綁定品牌，Canon 和 SONY 的全畫幅機身都可以用百微搭配 MFO-3 或 MV60 補上中焦段。**在不對畫質妥協的前提下，這是不讓機身進入 APS-C 裁切，也能避開外對焦 50mm 在 flat port 下的 port 長度問題的解決方案。**對 Canon 使用者來說，如果使用全畫幅機身、又想拍中焦段，不想裁切的話，這是唯一做法。
 
 1. [Nauticam MFO-3](https://www.divephotoguide.com/underwater-photography-scuba-ocean-news/introducing-nauticam-midrange-focus-optimizer-mfo-3)
    ![Pasted image 20260926114235](https://img.ljy.app/blog-assets/5582b1bafc8f6adc30d271b704f7f082ab6fcc1928c142b963b8e8cc7bcab21a.png)
