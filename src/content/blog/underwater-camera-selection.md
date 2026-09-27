@@ -53,7 +53,7 @@ Canon 達到 1:1 的原生中焦段微距鏡頭，目前只有上一代給 APS-C
 
 目前權衡的做法是全畫幅機身用 EF-EOS R 轉接環接上 Canon EF-S 35mm f/2.8 Macro。**Canon EOS R 全畫幅機身裝上 EF-S 鏡頭後，會自動切換成 APS-C 裁切模式。這時鏡頭視角等效 35 × 1.6 = 56mm，但只會使用約 40%（1 ÷ 1.6² ≈ 39%）的 CMOS 面積**。以 R6 Mark III 為例，原本 3250 萬像素的 CMOS，裝上 EF-S 鏡頭後只會用中間約 1300 萬像素拍攝。
 
-所以如果只用原生鏡頭，Canon 使用者可能要認真考慮用兩台相機分工：廣角用全畫幅，微距用 APS-C，才有合適的鏡頭群可用（而且這些鏡頭都是內對焦，適合水下使用）。另一個做法是在全畫幅上用百微加濕鏡，後面會另外說明。
+所以如果只用原生鏡頭，Canon 使用者可能要認真考慮用兩台相機分工：廣角用全畫幅，微距用 APS-C，才有合適的鏡頭群可用（而且這些鏡頭都是內對焦，適合水下使用）。如果只想用全畫幅機身，也可以用 100mm／105mm 百微搭配 MFO-3 或 MV60，把視角轉成接近 60mm 來拍中焦段。這部分後面會另外說明。
 
 1. [Canon EF-S 60mm f/2.8 Macro USM](https://www.kenrockwell.com/canon/lenses/60mm-macro.htm)
    ![Pasted image 20260926111715](https://img.ljy.app/blog-assets/e97435a4a1c8eb581bea5b0a9012ddc8e05891aeed7aeb10b30711bedc57256e.png)
@@ -78,7 +78,7 @@ Nikon 在 Z 接環推出了 Nikon Z MC 50mm，但它和 SEL50M28 一樣是外對
    ![Pasted image 20260926114924](https://img.ljy.app/blog-assets/0e3a367e03d672d1011f939619cdfb3d8f6b94492b1c61ed9f92f8f7784f6068.png)
 
 ## 濕鏡：用百微補上中焦段
-中焦段不一定要靠原生鏡頭。Nauticam 與 Marelux 各自推出外接濕鏡，裝在 flat port 前面，把 100mm、105mm 這類百微鏡頭的視角轉成接近 60mm。這個方案不綁定品牌，Canon 和 SONY 的全畫幅機身都可以用百微搭配 MFO-3 或 MV60 補上中焦段，不必讓機身進入 APS-C 裁切，也能避開外對焦 50mm 在 flat port 下的 port 長度問題。我實際用過 MFO-3，確實可以拍出 60mm 的視角。
+中焦段不一定要靠原生鏡頭。Nauticam 與 Marelux 各自推出外接濕鏡，裝在 flat port 前面，可以把 100mm、105mm 這類百微鏡頭的視角，轉成接近 60mm 鏡頭的視角。這個方案不綁定品牌，Canon 和 SONY 的全畫幅機身都可以用百微搭配 MFO-3 或 MV60 補上中焦段，不必讓機身進入 APS-C 裁切，也能避開外對焦 50mm 在 flat port 下的 port 長度問題。對 Canon 來說，這也是只用全畫幅機身、又想拍中焦段時的直接做法。我實際用過 MFO-3，確實可以拍出 60mm 的視角。
 
 1. [Nauticam MFO-3](https://www.divephotoguide.com/underwater-photography-scuba-ocean-news/introducing-nauticam-midrange-focus-optimizer-mfo-3)
    ![Pasted image 20260926114235](https://img.ljy.app/blog-assets/5582b1bafc8f6adc30d271b704f7f082ab6fcc1928c142b963b8e8cc7bcab21a.png)
@@ -89,12 +89,13 @@ Nikon 在 Z 接環推出了 Nikon Z MC 50mm，但它和 SEL50M28 一樣是外對
 選哪一套配置，最後還是要看你自己的拍攝喜好。
 
 - **想用一套全畫幅系統兼顧廣角和微距**：可以考慮 Nikon 或 SONY，但兩家補中焦段微距的方式不同。Nikon 可以用 FTZ 轉接 AF-S 60mm Micro；SONY 可以讓 SEL50M28 搭配 curved port，或用百微加上 MFO-3／MV60 這類濕鏡。
-- **已經確定偏向某一種題材**：Canon 可能是不錯的選擇。例如偏廣角，可以用全畫幅機身加 RF 7-14mm；偏微距，可以用 APS-C 機身搭配 EF-S 微距鏡頭。兩種都想拍，可能就要考慮兩台機身分工；如果願意用濕鏡，也可以在全畫幅上用百微加 MFO-3／MV60 補上中焦段。
+- **已經確定偏向某一種題材**：Canon 可能是不錯的選擇。例如偏廣角，可以用全畫幅機身加 RF 7-14mm；偏微距，可以用 APS-C 機身搭配 EF-S 微距鏡頭。兩種都想拍，可能就要考慮兩台機身分工。
+- **用 Canon，但只想用全畫幅機身**：可以用百微搭配 MFO-3 或 MV60，把視角轉成接近 60mm 來拍中焦段，不必另外準備 APS-C 機身。
 
 最後還是回到前面提到的重量。整套器材可能超過 10kg，如果常在臺灣岸潛，選一套你願意帶下水的配置，往往比規格上的差異更重要。
 
-| 品牌    | 全畫幅魚眼                            | 全畫幅中焦段微距（1:1）                                        | 對 CMOS 選擇的影響               |
-| ----- | -------------------------------- | ---------------------------------------------------- | -------------------------- |
-| Canon | RF 7-14mm F2.8-3.5 L Fisheye STM | 原生 1:1 中焦段微距目前只有 EF-S（要進入 APS-C 裁切），或百微加 MFO-3／MV60 | 不用濕鏡的話，微距可考慮另外準備 APS-C 機身 |
-| SONY  | SEL814G                          | SEL50M28（外對焦，建議用 curved port），或百微加 MFO-3／MV60 | 全畫幅可行，但要靠 port 或濕鏡補足       |
-| Nikon | AF-S 8-15mm（FTZ 轉接）              | AF-S 60mm Micro（FTZ 轉接）、Z MC 50mm                    | 目前較容易以單一全畫幅系統涵蓋魚眼、廣角與中焦段微距 |
+| 品牌    | 全畫幅魚眼                            | 全畫幅中焦段微距（1:1）                                       | 對 CMOS 選擇的影響               |
+| ----- | -------------------------------- | --------------------------------------------------- | -------------------------- |
+| Canon | RF 7-14mm F2.8-3.5 L Fisheye STM | 原生 1:1 中焦段微距目前只有 EF-S（要進入 APS-C 裁切）；全畫幅可用百微搭配 MFO-3／MV60 | 只想用全畫幅，可用百微加 MFO-3／MV60；不用濕鏡的話，微距可考慮另外準備 APS-C 機身搭配 EF-S 微距鏡頭 |
+| SONY  | SEL814G                          | SEL50M28（外對焦，建議用 curved port），或百微加 MFO-3／MV60       | 全畫幅可行，但要靠 port 或濕鏡補足       |
+| Nikon | AF-S 8-15mm（FTZ 轉接）              | AF-S 60mm Micro（FTZ 轉接）、Z MC 50mm                   | 目前較容易以單一全畫幅系統涵蓋魚眼、廣角與中焦段微距 |
