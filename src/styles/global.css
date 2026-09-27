@@ -196,6 +196,7 @@ button, input { font: inherit; }
 .toc ol { line-height: 1.55; margin: 18px 0 2px; padding-left: 1.5rem; }
 .toc li { margin: 6px 0; }
 .toc li.nested { margin-left: 1rem; }
+.toc li.nested-2 { margin-left: 2rem; }
 .toc a { text-decoration-color: transparent; text-underline-offset: 3px; }
 .toc a:hover { color: var(--accent); text-decoration-color: var(--accent); }
 

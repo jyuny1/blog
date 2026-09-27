@@ -6,7 +6,9 @@ interface Props {
 }
 
 const { headings } = Astro.props
-const items = headings.filter(({ depth }) => depth === 2 || depth === 3)
+const items = headings.filter(({ depth }) => depth >= 1 && depth <= 3)
+// Indent relative to the shallowest heading, so posts that start at H1 or H2 both render a flat top level.
+const minDepth = items.length > 0 ? Math.min(...items.map(({ depth }) => depth)) : 1
 ---
 
 {
@@ -15,7 +17,12 @@ const items = headings.filter(({ depth }) => depth === 2 || depth === 3)
       <summary>Contents</summary>
       <ol>
         {items.map((heading) => (
-          <li class:list={{ nested: heading.depth === 3 }}>
+          <li
+            class:list={{
+              nested: heading.depth - minDepth === 1,
+              "nested-2": heading.depth - minDepth >= 2,
+            }}
+          >
             <a href={`#${heading.slug}`}>{heading.text}</a>
           </li>
         ))}
