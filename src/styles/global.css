@@ -220,6 +220,8 @@ button, input { font: inherit; }
 .prose ul,
 .prose ol { margin: 1.2em 0; }
 .prose li { margin: .45em 0; }
+.prose p,
+.prose li { text-align: justify; text-justify: inter-character; }
 .prose a { color: var(--text-strong); text-decoration-color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .prose a:hover { color: var(--accent); }
 .prose strong { color: var(--text-strong); font-weight: 700; }
