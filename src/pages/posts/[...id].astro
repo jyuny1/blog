@@ -16,12 +16,42 @@ interface Props {
 const { post } = Astro.props
 const { Content, headings } = await render(post)
 const description = post.data.description ?? post.data.title
+
+function getFirstMarkdownImage(body?: string): { url: string; alt: string } | undefined {
+  if (!body) return undefined
+  const regex = /!\[(.*?)\]\(\s*(\S+?)(?:\s+["'][^"']*["'])?\s*\)/g
+  let match: RegExpExecArray | null
+  while ((match = regex.exec(body)) !== null) {
+    const [, rawAlt, rawUrl] = match
+    const url = rawUrl.replace(/^<|>$/g, "")
+    if (url.startsWith("https://") && !url.toLowerCase().endsWith(".svg")) {
+      return { url, alt: rawAlt.trim() }
+    }
+  }
+  return undefined
+}
+
+function isUsefulAlt(alt?: string): alt is string {
+  if (!alt || alt.trim() === "") return false
+  if (/^Pasted image\b/i.test(alt)) return false
+  if (/^image\b/i.test(alt)) return false
+  if (/\.(png|jpe?g|webp|gif)$/i.test(alt)) return false
+  return true
+}
+
+const firstImage = !post.data.image ? getFirstMarkdownImage(post.body) : undefined
+const image = post.data.image ?? firstImage?.url
+const imageAlt =
+  firstImage && isUsefulAlt(firstImage.alt) ? firstImage.alt : post.data.title
 ---
 
 <BaseLayout
   title={post.data.title}
   description={description}
-  image={post.data.image}
+  image={image}
+  imageAlt={imageAlt}
+  publishedTime={post.data.date?.toISOString()}
+  modifiedTime={post.data.updated?.toISOString()}
   type="article"
 >
   <article class="article-shell">
