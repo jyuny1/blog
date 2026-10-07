@@ -35,7 +35,7 @@ published: true
 但測光模式仍影響相機界面中的曝光指示(但不影響實際成像，可忽略)，例如下圖的 22 曝光指示器
 ![Pasted image 20261007145445](https://img.ljy.app/blog-assets/5fc62a72eace6306a38ccf6c0c2a31d957376510f7c6a2933426b0efe78d636b.png)
 
-另外一律建議在 [d9：顯示模式](https://onlinemanual.nikonimglib.com/z8/zh-tw/csmd_view_mode_photo_lv_239.html)中設定成**調整以方便查看**，並開啓 [a14：最大光圈 Lv](https://onlinemanual.nikonimglib.com/z8/zh-tw/csma_maximum_aperture_lv_217.html) 這樣可以用相機的最大光圈進行對焦
+另外一律建議在 [d9：顯示模式](https://onlinemanual.nikonimglib.com/z8/zh-tw/csmd_view_mode_photo_lv_239.html)中設定成**調整以方便查看**，並開啓 [a14：最大光圈 Lv](https://onlinemanual.nikonimglib.com/z8/zh-tw/csma_maximum_aperture_lv_217.html) 這樣可以用裝在相機鏡頭的最大光圈進行對焦
 
 # 什麼時候測光模式會影響曝光
 **在水下使用 TTL 拍攝時**，測光結果會影響 TTL 的計算進而影響閃燈出力。同時開啟自動 ISO 或使用 P、S、A 模式時，曝光也會受測光模式影響。
