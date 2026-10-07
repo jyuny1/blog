@@ -3,6 +3,7 @@ import sitemap from "@astrojs/sitemap"
 import { unified } from "@astrojs/markdown-remark"
 import remarkCallouts, {
   rehypeImages,
+  rehypeTableLists,
   remarkDropDuplicateTitle,
 } from "./src/plugins/remark-callouts.mjs"
 
@@ -13,7 +14,7 @@ export default defineConfig({
   markdown: {
     processor: unified({
       remarkPlugins: [remarkDropDuplicateTitle, remarkCallouts],
-      rehypePlugins: [rehypeImages],
+      rehypePlugins: [rehypeImages, rehypeTableLists],
     }),
     shikiConfig: {
       theme: "github-light",

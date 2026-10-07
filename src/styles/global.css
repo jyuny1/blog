@@ -300,6 +300,10 @@ button, input { font: inherit; }
 .prose th,
 .prose td { border-bottom: 1px solid var(--line); min-width: 120px; padding: 12px 15px; text-align: left; }
 .prose th { color: var(--text-strong); }
+.prose td .cell-list,
+.prose th .cell-list { margin: 0; padding-left: 1.2em; }
+.prose td .cell-list li,
+.prose th .cell-list li { margin: .2em 0; text-align: left; }
 .prose code { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 3px; font-family: var(--font-mono); font-size: .86em; padding: .15em .35em; }
 .prose pre { border: 1px solid var(--line); border-radius: 3px; font-size: .88rem; line-height: 1.65; margin: 2rem 0; overflow-x: auto; padding: 1.2rem; }
 .prose pre code { background: transparent; border: 0; padding: 0; }
