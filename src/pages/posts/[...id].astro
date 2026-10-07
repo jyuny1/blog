@@ -17,6 +17,11 @@ const { post } = Astro.props
 const { Content, headings } = await render(post)
 const description = post.data.description ?? post.data.title
 
+const headingBase =
+  headings.length > 0
+    ? Math.max(1, Math.min(5, Math.min(...headings.map((h) => h.depth))))
+    : 0
+
 function getFirstMarkdownImage(body?: string): { url: string; alt: string } | undefined {
   if (!body) return undefined
   const regex = /!\[(.*?)\]\(\s*(\S+?)(?:\s+["'][^"']*["'])?\s*\)/g
@@ -76,7 +81,7 @@ const imageAlt =
     </header>
 
     <TableOfContents {headings} />
-    <div class="prose">
+    <div class="prose" data-heading-base={headingBase || undefined}>
       <Content />
     </div>
 
